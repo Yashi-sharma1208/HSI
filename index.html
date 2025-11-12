@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HSI Embedded Chat</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f4f6f9;
+      font-family: Arial, sans-serif;
+    }
+
+    h1 {
+      font-size: 4rem;
+      color: #004aad;
+      font-weight: bold;
+      text-align: center;
+      letter-spacing: 2px;
+    }
+  </style>
+</head>
+<body>
+  <h1>HSI</h1>
+
+  <!-- Embedded Messaging Script -->
+  <script type='text/javascript'>
+    function initEmbeddedMessaging() {
+      try {
+        embeddedservice_bootstrap.settings.language = 'en_US'; // Set language if needed
+
+        embeddedservice_bootstrap.init(
+          '00DUE0000050HmZ',
+          'HS_Live_Chat',
+          'https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1762863013240',
+          {
+            scrt2URL: 'https://hsiuk--fullcopy.sandbox.my.salesforce-scrt.com'
+          }
+        );
+      } catch (err) {
+        console.error('Error loading Embedded Messaging: ', err);
+      }
+    }
+
+    // Wait for the embedded messaging framework to load
+    window.addEventListener("onEmbeddedMessagingReady", e => {
+      console.log("Embedded Messaging Ready");
+
+      // ✅ Pass your hidden prechat field here
+      embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
+        "Brand": "HSI"  // <-- your brand name value here
+      });
+
+      console.log("Hidden Prechat Field 'Brand' set to Kent");
+    });
+  </script>
+
+  <!-- Bootstrap Loader for Embedded Messaging -->
+  <script type='text/javascript'
+          src='https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1762863013240/assets/js/bootstrap.min.js'
+          onload='initEmbeddedMessaging()'>
+  </script>
+</body>
+</html>
