@@ -9,6 +9,7 @@
       margin: 0;
       height: 100vh;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       background-color: #f4f6f9;
@@ -21,48 +22,131 @@
       font-weight: bold;
       text-align: center;
       letter-spacing: 2px;
+      margin-bottom: 40px;
+    }
+
+    /* Offline form styling */
+    #offlineForm {
+      display: none;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      padding: 20px 30px;
+      width: 360px;
+      font-size: 1rem;
+    }
+
+    #offlineForm label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    #offlineForm input,
+    #offlineForm textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    #offlineForm input[type="submit"] {
+      background-color: #004aad;
+      color: white;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s;
+      margin-top: 15px;
+    }
+
+    #offlineForm input[type="submit"]:hover {
+      background-color: #003480;
+    }
+
+    #offlineForm h2 {
+      color: #004aad;
+      margin-top: 0;
+      text-align: center;
     }
   </style>
 </head>
 <body>
   <h1>HSI</h1>
 
-  <!-- Embedded Messaging Script -->
-  <script type='text/javascript'>
+  <!-- 🔹 OFFLINE SUPPORT FORM (Web-to-Case) -->
+  <div id="offlineForm">
+    <h2>We’re Offline</h2>
+    <p>Please leave your details and we’ll get back to you soon.</p>
+
+    <form action="https://hsiuk--fullcopy.sandbox.my.salesforce.com/servlet/servlet.WebToCase?encoding=UTF-8&orgId=00DUE0000050HmZ" method="POST">
+      <input type="hidden" name="orgid" value="00DUE0000050HmZ">
+      <input type="hidden" name="retURL" value="http://">
+
+      <label for="name">Contact Name</label>
+      <input id="name" maxlength="80" name="name" size="20" type="text" required />
+
+      <label for="email">Email</label>
+      <input id="email" maxlength="80" name="email" size="20" type="email" required />
+
+      <label for="phone">Phone</label>
+      <input id="phone" maxlength="40" name="phone" size="20" type="text" />
+
+      <label for="subject">Subject</label>
+      <input id="subject" maxlength="80" name="subject" size="20" type="text" required />
+
+      <label for="description">Description</label>
+      <textarea name="description" rows="4" required></textarea>
+
+      <input type="submit" value="Submit">
+    </form>
+  </div>
+
+  <!-- 🔹 EMBEDDED MESSAGING SCRIPT -->
+  <script type="text/javascript">
     function initEmbeddedMessaging() {
       try {
-        embeddedservice_bootstrap.settings.language = 'en_US'; // Set language if needed
+        embeddedservice_bootstrap.settings.language = "en_US";
 
         embeddedservice_bootstrap.init(
-          '00DUE0000050HmZ',
-          'HS_Live_Chat',
-          'https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1762863013240',
+          "00DUE0000050HmZ", // Org ID
+          "HS_Live_Chat",   // Deployment Name
+          "https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1762863013240", // URL
           {
-            scrt2URL: 'https://hsiuk--fullcopy.sandbox.my.salesforce-scrt.com'
+            scrt2URL: "https://hsiuk--fullcopy.sandbox.my.salesforce-scrt.com"
           }
         );
       } catch (err) {
-        console.error('Error loading Embedded Messaging: ', err);
+        console.error("Error loading Embedded Messaging:", err);
       }
     }
 
-    // Wait for the embedded messaging framework to load
-    window.addEventListener("onEmbeddedMessagingReady", e => {
+    // 🔹 Detect when framework is ready
+    window.addEventListener("onEmbeddedMessagingReady", (e) => {
       console.log("Embedded Messaging Ready");
 
-      // ✅ Pass your hidden prechat field here
       embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
-        "Brand": "HSI"  // <-- your brand name value here
+        Brand: "HSI"
       });
 
-      console.log("Hidden Prechat Field 'Brand' set to Kent");
+      // 🔹 After settings load, check if any agent is available
+      embeddedservice_bootstrap.settings.onSettingsCallCompleted = function (settings) {
+        console.log("Agent Availability:", settings.isAgentAvailable);
+        if (!settings.isAgentAvailable) {
+          document.getElementById("offlineForm").style.display = "block";
+        }
+      };
     });
   </script>
 
-  <!-- Bootstrap Loader for Embedded Messaging -->
-  <script type='text/javascript'
-          src='https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1762863013240/assets/js/bootstrap.min.js'
-          onload='initEmbeddedMessaging()'>
-  </script>
+  <!-- Bootstrap Loader -->
+  <script
+    type="text/javascript"
+    src="https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1762863013240/assets/js/bootstrap.min.js"
+    onload="initEmbeddedMessaging()"
+  ></script>
 </body>
 </html>
