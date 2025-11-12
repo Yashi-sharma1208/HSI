@@ -1,164 +1,201 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HSI Embedded Chat</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Join OrgFarm | Careers</title>
   <style>
     body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+      color: #333;
       margin: 0;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      background-color: #f4f6f9;
-      font-family: Arial, sans-serif;
+      padding: 0;
     }
 
-    h1 {
-      font-size: 4rem;
-      color: #004aad;
-      font-weight: bold;
+    header {
+      background: #1565c0;
+      color: white;
+      padding: 40px 20px;
       text-align: center;
-      letter-spacing: 2px;
-      margin-bottom: 40px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
     }
 
-    /* Offline form styling */
-    #offlineForm {
-      display: none;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-      padding: 20px 30px;
-      width: 360px;
-      font-size: 1rem;
+    header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+      letter-spacing: 1px;
     }
 
-    #offlineForm label {
-      display: block;
+    header p {
       margin-top: 10px;
-      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 60px 20px 30px;
+    }
+
+    .hero h2 {
+      font-size: 2rem;
+      color: #0d47a1;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: #444;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .content {
+      max-width: 900px;
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .content h3 {
+      color: #0d47a1;
+      margin-bottom: 15px;
+    }
+
+    .job-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .job-list li {
+      background: #e3f2fd;
+      margin: 15px 0;
+      padding: 15px 20px;
+      border-radius: 10px;
+      text-align: left;
+    }
+
+    .job-list h4 {
+      margin: 0;
+      font-size: 1.2rem;
+      color: #1565c0;
+    }
+
+    .job-list p {
+      margin: 5px 0 0;
+      color: #555;
+      font-size: 0.95rem;
+    }
+
+    .apply-note {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 1.05rem;
       color: #333;
     }
 
-    #offlineForm input,
-    #offlineForm textarea {
-      width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
-    }
-
-    #offlineForm input[type="submit"] {
-      background-color: #004aad;
-      color: white;
-      font-weight: bold;
-      border: none;
-      cursor: pointer;
-      transition: background 0.3s;
-      margin-top: 15px;
-    }
-
-    #offlineForm input[type="submit"]:hover {
-      background-color: #003480;
-    }
-
-    #offlineForm h2 {
-      color: #004aad;
-      margin-top: 0;
+    footer {
+      background: #f1f1f1;
+      padding: 20px;
       text-align: center;
+      font-size: 14px;
+      color: #555;
+      margin-top: 40px;
+    }
+
+    .chat-hint {
+      text-align: center;
+      font-size: 1rem;
+      margin-top: 20px;
+      color: #444;
     }
   </style>
 </head>
+
 <body>
-  <h1>HSI</h1>
+  <header>
+    <h1>Join the OrgFarm Team</h1>
+    <p>Grow with us — we’re cultivating innovation in agriculture 🌱</p>
+  </header>
 
-  <!-- 🔹 OFFLINE SUPPORT FORM (Web-to-Case) -->
-  <div id="offlineForm">
-    <h2>We’re Offline</h2>
-    <p>Please leave your details and we’ll get back to you soon.</p>
+  <section class="hero">
+    <h2>We're Hiring!</h2>
+    <p>At OrgFarm, we believe in sustainable farming powered by smart technology.
+      Explore our current openings and chat with our recruitment assistant below
+      to learn more.</p>
+  </section>
 
-    <form action="https://hsiuk--fullcopy.sandbox.my.salesforce.com/servlet/servlet.WebToCase?encoding=UTF-8&orgId=00DUE0000050HmZ" method="POST">
-      <input type="hidden" name="orgid" value="00DUE0000050HmZ">
-      <input type="hidden" name="retURL" value="http://">
+  <div class="content">
+    <h3>Open Positions</h3>
+    <ul class="job-list">
+      <li>
+        <h4>Software Engineer (Salesforce Developer)</h4>
+        <p>Location: Remote / Bengaluru</p>
+        <p>Work on innovative Salesforce solutions that empower farmers and distributors.</p>
+      </li>
+      <li>
+        <h4>Marketing Executive</h4>
+        <p>Location: Pune</p>
+        <p>Help us connect with sustainable brands and promote organic practices.</p>
+      </li>
+      <li>
+        <h4>Field Operations Manager</h4>
+        <p>Location: Hyderabad</p>
+        <p>Manage on-ground farming partnerships and ensure high-quality organic produce.</p>
+      </li>
+    </ul>
 
-      <label for="name">Contact Name</label>
-      <input id="name" maxlength="80" name="name" size="20" type="text" required />
-
-      <label for="email">Email</label>
-      <input id="email" maxlength="80" name="email" size="20" type="email" required />
-
-      <label for="phone">Phone</label>
-      <input id="phone" maxlength="40" name="phone" size="20" type="text" />
-
-      <label for="subject">Subject</label>
-      <input id="subject" maxlength="80" name="subject" size="20" type="text" required />
-
-      <label for="description">Description</label>
-      <textarea name="description" rows="4" required></textarea>
-
-      <input type="submit" value="Submit">
-    </form>
+    <p class="apply-note">
+      Interested? Chat with our HR Assistant below 👇 to apply or learn more!
+    </p>
   </div>
 
-<script type="text/javascript">
+  <div class="chat-hint">
+    💬 The OrgFarm Recruitment Assistant will appear here once loaded.
+  </div>
+
+  <footer>
+    &copy; 2025 OrgFarm Pvt. Ltd. All rights reserved.
+  </footer>
+
+<script type='text/javascript'>
   function initEmbeddedMessaging() {
     try {
-      embeddedservice_bootstrap.settings.language = "en_US";
+      embeddedservice_bootstrap.settings.language = 'en_US'; // Set language if needed
 
       embeddedservice_bootstrap.init(
-        "00DUE0000050HmZ", // Org ID
-        "HS_Live_Chat",   // Deployment Name
-        "https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1762863013240",
+        '00DUE0000050HmZ',
+        'HS_Live_Chat',
+        'https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1762863013240',
         {
-          scrt2URL: "https://hsiuk--fullcopy.sandbox.my.salesforce-scrt.com"
+          scrt2URL: 'https://hsiuk--fullcopy.sandbox.my.salesforce-scrt.com'
         }
       );
     } catch (err) {
-      console.error("Error loading Embedded Messaging:", err);
+      console.error('Error loading Embedded Messaging: ', err);
     }
   }
 
-  // Run when the chat window is ready
-  window.addEventListener("onEmbeddedMessagingReady", function () {
+  // Wait for the embedded messaging framework to load
+  window.addEventListener("onEmbeddedMessagingReady", e => {
     console.log("Embedded Messaging Ready");
 
+    // ✅ Pass your hidden prechat field here
     embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
-      Brand: "HSI"
+      "Brand": "Test"  // <-- your brand name value here
     });
 
-    // Wait 10 seconds — if no agent joins, show offline form
-    let agentJoined = false;
-
-    window.addEventListener("onEmbeddedMessagingAgentJoined", function () {
-      agentJoined = true;
-      console.log("Agent joined the conversation");
-    });
-
-    // after 10 seconds, check if any agent joined
-    setTimeout(() => {
-      if (!agentJoined) {
-        console.log("No agent joined — showing offline form");
-        document.getElementById("offlineForm").style.display = "block";
-
-        // Hide chat widget completely
-        const chatWidget = document.querySelector("embeddedservice-messaging");
-        if (chatWidget) chatWidget.style.display = "none";
-      }
-    }, 10000); // 10 seconds
+    console.log("Hidden Prechat Field 'Brand' set to OrgFarm");
   });
 </script>
 
-
-  <!-- Bootstrap Loader -->
-  <script
-    type="text/javascript"
-    src="https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1762863013240/assets/js/bootstrap.min.js"
-    onload="initEmbeddedMessaging()"
-  ></script>
+<!-- Keep this line as is -->
+<script type='text/javascript' 
+        src='https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1762863013240/assets/js/bootstrap.min.js' 
+        onload='initEmbeddedMessaging()'>
+</script>
 </body>
 </html>
