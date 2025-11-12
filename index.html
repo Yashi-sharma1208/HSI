@@ -105,42 +105,54 @@
     </form>
   </div>
 
-  <!-- 🔹 EMBEDDED MESSAGING SCRIPT -->
-  <script type="text/javascript">
-    function initEmbeddedMessaging() {
-      try {
-        embeddedservice_bootstrap.settings.language = "en_US";
+<script type="text/javascript">
+  function initEmbeddedMessaging() {
+    try {
+      embeddedservice_bootstrap.settings.language = "en_US";
 
-        embeddedservice_bootstrap.init(
-          "00DUE0000050HmZ", // Org ID
-          "HS_Live_Chat",   // Deployment Name
-          "https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1762863013240", // URL
-          {
-            scrt2URL: "https://hsiuk--fullcopy.sandbox.my.salesforce-scrt.com"
-          }
-        );
-      } catch (err) {
-        console.error("Error loading Embedded Messaging:", err);
-      }
-    }
-
-    // 🔹 Detect when framework is ready
-    window.addEventListener("onEmbeddedMessagingReady", (e) => {
-      console.log("Embedded Messaging Ready");
-
-      embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
-        Brand: "HSI"
-      });
-
-      // 🔹 After settings load, check if any agent is available
-      embeddedservice_bootstrap.settings.onSettingsCallCompleted = function (settings) {
-        console.log("Agent Availability:", settings.isAgentAvailable);
-        if (!settings.isAgentAvailable) {
-          document.getElementById("offlineForm").style.display = "block";
+      embeddedservice_bootstrap.init(
+        "00DUE0000050HmZ", // Org ID
+        "HS_Live_Chat",   // Deployment Name
+        "https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1762863013240",
+        {
+          scrt2URL: "https://hsiuk--fullcopy.sandbox.my.salesforce-scrt.com"
         }
-      };
+      );
+    } catch (err) {
+      console.error("Error loading Embedded Messaging:", err);
+    }
+  }
+
+  // Run when the chat window is ready
+  window.addEventListener("onEmbeddedMessagingReady", function () {
+    console.log("Embedded Messaging Ready");
+
+    embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
+      Brand: "HSI"
     });
-  </script>
+
+    // Wait 10 seconds — if no agent joins, show offline form
+    let agentJoined = false;
+
+    window.addEventListener("onEmbeddedMessagingAgentJoined", function () {
+      agentJoined = true;
+      console.log("Agent joined the conversation");
+    });
+
+    // after 10 seconds, check if any agent joined
+    setTimeout(() => {
+      if (!agentJoined) {
+        console.log("No agent joined — showing offline form");
+        document.getElementById("offlineForm").style.display = "block";
+
+        // Hide chat widget completely
+        const chatWidget = document.querySelector("embeddedservice-messaging");
+        if (chatWidget) chatWidget.style.display = "none";
+      }
+    }, 10000); // 10 seconds
+  });
+</script>
+
 
   <!-- Bootstrap Loader -->
   <script
