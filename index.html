@@ -164,14 +164,6 @@
   // 🔥 Send welcome message as soon as chat widget is ready
   window.addEventListener("onEmbeddedMessagingEvent", function (event) {
       console.log("Chat widget is ready — sending welcome message");
-
-      embeddedservice.messaging.sendMessage({
-        message: {
-          type: "text",
-          text: "👋 Hello! Welcome to Nuffield Health Support. An agent will be with you shortly."
-        },
-        sender: "business" // IMPORTANT — shows message as system/business
-      });
   });
 </script>
 
