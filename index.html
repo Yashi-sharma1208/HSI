@@ -160,8 +160,6 @@
   <footer>
     &copy; 2025 OrgFarm Pvt. Ltd. All rights reserved.
   </footer>
-<!-- 🔥 Welcome Message Script -->
-
 <!-- 🔧 Initialize Embedded Messaging -->
 <script type="text/javascript">
   function initEmbeddedMessaging() {
@@ -177,7 +175,7 @@
         }
       );
     } catch (err) {
-      console.error("❌ Error loading Embedded Messaging:", err);
+      console.error("Error loading Embedded Messaging:", err);
     }
   }
 </script>
@@ -189,6 +187,7 @@
   onload="initEmbeddedMessaging()">
 </script>
 
+<!-- 🔥 Welcome Message Script -->
 <script type="text/javascript">
   // Listen for Embedded Messaging lifecycle event
 
@@ -198,7 +197,7 @@
       embeddedservice.messaging.sendMessage({
         message: {
           type: "text",
-          text: "👋 Hello! Welcome to Nuffield Health Support. An agent will be with you shortly."
+          text: "Hello! Welcome to Nuffield Health Support. An agent will be with you shortly."
         },
         sender: "business"   // ensures message shows as a system/business message
       });
