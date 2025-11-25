@@ -160,7 +160,22 @@
   <footer>
     &copy; 2025 OrgFarm Pvt. Ltd. All rights reserved.
   </footer>
+<script type='text/javascript'>
+  // 🔥 Send welcome message as soon as chat widget is ready
+  window.addEventListener("onEmbeddedMessagingEvent", function (event) {
+    if (event?.detail?.eventType === "ready") {
+      console.log("Chat widget is ready — sending welcome message");
 
+      embeddedservice.messaging.sendMessage({
+        message: {
+          type: "text",
+          text: "👋 Hello! Welcome to Nuffield Health Support. An agent will be with you shortly."
+        },
+        sender: "business" // IMPORTANT — shows message as system/business
+      });
+    }
+  });
+</script>
 <script type='text/javascript'>
 	function initEmbeddedMessaging() {
 		try {
