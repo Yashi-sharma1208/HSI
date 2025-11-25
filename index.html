@@ -161,25 +161,6 @@
     &copy; 2025 OrgFarm Pvt. Ltd. All rights reserved.
   </footer>
 <!-- 🔥 Welcome Message Script -->
-<script type="text/javascript">
-  window.addEventListener("onEmbeddedMessagingEvent", function(event) {
-    const type = event?.detail?.eventType;
-    console.log("🔥 Messaging Event:", type, event?.detail);
-
-    // Wait until a conversation object exists
-    if (type === "conversationStarted") {
-      console.log("Conversation started — sending welcome message");
-
-      embeddedservice.messaging.sendMessage({
-        message: {
-          type: "text",
-          text: "👋 Hello! Welcome to Nuffield Health Support. An agent will be with you shortly."
-        },
-        sender: "business"
-      });
-    }
-  });
-</script>
 
 <!-- 🔧 Initialize Embedded Messaging -->
 <script type="text/javascript">
@@ -206,6 +187,21 @@
   type="text/javascript"
   src="https://orgfarm-fc63a0ccc4-dev-ed.develop.my.site.com/ESWNuffieldHealth31764046308186/assets/js/bootstrap.min.js"
   onload="initEmbeddedMessaging()">
+</script>
+
+<script type="text/javascript">
+  // Listen for Embedded Messaging lifecycle event
+
+    // Only send message once the widget is fully loaded
+      console.log("Chat widget is ready — sending welcome message");
+
+      embeddedservice.messaging.sendMessage({
+        message: {
+          type: "text",
+          text: "👋 Hello! Welcome to Nuffield Health Support. An agent will be with you shortly."
+        },
+        sender: "business"   // ensures message shows as a system/business message
+      });
 </script>
 
 
