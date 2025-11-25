@@ -161,6 +161,7 @@
     &copy; 2025 OrgFarm Pvt. Ltd. All rights reserved.
   </footer>
 <!-- 🔧 Initialize Embedded Messaging -->
+<!-- 🔧 Initialize Embedded Messaging -->
 <script type="text/javascript">
   function initEmbeddedMessaging() {
     try {
@@ -175,7 +176,7 @@
         }
       );
     } catch (err) {
-      console.error("Error loading Embedded Messaging:", err);
+      console.error("❌ Error loading Embedded Messaging:", err);
     }
   }
 </script>
@@ -189,9 +190,12 @@
 
 <!-- 🔥 Welcome Message Script -->
 <script type="text/javascript">
-  // Listen for Embedded Messaging lifecycle event
+  window.addEventListener("onEmbeddedMessagingEvent", function(event) {
+    const type = event?.detail?.eventType;
+    console.log("EVENT:", type);
 
-    // Only send message once the widget is fully loaded
+    // Only send message once the chat session actually exists
+    if (type === "conversationStarted") {
       console.log("Chat widget is ready — sending welcome message");
 
       embeddedservice.messaging.sendMessage({
@@ -199,9 +203,10 @@
           type: "text",
           text: "Hello! Welcome to Nuffield Health Support. An agent will be with you shortly."
         },
-        sender: "business"   // ensures message shows as a system/business message
+        sender: "business"
       });
+    }
+  });
 </script>
-
 
 </html>
