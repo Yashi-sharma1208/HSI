@@ -162,21 +162,20 @@
   </footer>
 <!-- 🔥 Welcome Message Script -->
 <script type="text/javascript">
-  // Listen for Embedded Messaging lifecycle events
   window.addEventListener("onEmbeddedMessagingEvent", function(event) {
-    const eventType = event?.detail?.eventType;
-    console.log("🔥 Embedded Messaging Event:", eventType);
+    const type = event?.detail?.eventType;
+    console.log("🔥 Messaging Event:", type, event?.detail);
 
-    // Only send message once the widget is fully loaded
-    if (eventType === "ready") {
-      console.log("Chat widget is ready — sending welcome message");
+    // Wait until a conversation object exists
+    if (type === "conversationStarted") {
+      console.log("Conversation started — sending welcome message");
 
       embeddedservice.messaging.sendMessage({
         message: {
           type: "text",
           text: "👋 Hello! Welcome to Nuffield Health Support. An agent will be with you shortly."
         },
-        sender: "business"   // ensures message shows as a system/business message
+        sender: "business"
       });
     }
   });
