@@ -162,51 +162,41 @@
   </footer>
 <!-- 🔧 Initialize Embedded Messaging -->
 <!-- 🔧 Initialize Embedded Messaging -->
-<script type="text/javascript">
-  function initEmbeddedMessaging() {
-    try {
-      embeddedservice_bootstrap.settings.language = "en_US"; // Example: 'en', 'en-US'
+<script type='text/javascript'>
+	function initEmbeddedMessaging() {
+		try {
+			embeddedservice_bootstrap.settings.language = 'en_US';
 
-      embeddedservice_bootstrap.init(
-        "00DdL00000fWhmz",  // Salesforce Org ID
-        "Nuffield_Health_3",  // Embedded Messaging Deployment Name
-        "https://orgfarm-fc63a0ccc4-dev-ed.develop.my.site.com/ESWNuffieldHealth31764046308186", // Endpoint URL
-        {
-          scrt2URL: "https://orgfarm-fc63a0ccc4-dev-ed.develop.my.salesforce-scrt.com"
-        }
-      );
-    } catch (err) {
-      console.error("❌ Error loading Embedded Messaging:", err);
-    }
-  }
+			embeddedservice_bootstrap.init(
+				'00DdL00000fWhmz',
+				'Nuffield_Health_3',
+				'https://orgfarm-fc63a0ccc4-dev-ed.develop.my.site.com/ESWNuffieldHealth31764046308186',
+				{
+					scrt2URL: 'https://orgfarm-fc63a0ccc4-dev-ed.develop.my.salesforce-scrt.com'
+				}
+			);
+
+			embeddedservice_bootstrap.on('messaging:ready', () => {
+				
+				// 1) Open chat automatically (optional)
+				embeddedservice_bootstrap.api.openChat();
+
+				// 2) Send custom message automatically
+				embeddedservice_bootstrap.api.sendMessageToChat({
+					text: "Hello! Welcome to our support chat"
+				});
+
+			});
+
+		} catch (err) {
+			console.error('Error loading Embedded Messaging: ', err);
+		}
+	};
 </script>
 
-<!-- 🚀 Load Bootstrap script and start Messaging -->
-<script
-  type="text/javascript"
-  src="https://orgfarm-fc63a0ccc4-dev-ed.develop.my.site.com/ESWNuffieldHealth31764046308186/assets/js/bootstrap.min.js"
-  onload="initEmbeddedMessaging()">
+<script type='text/javascript' 
+	src='https://orgfarm-fc63a0ccc4-dev-ed.develop.my.site.com/ESWNuffieldHealth31764046308186/assets/js/bootstrap.min.js' 
+	onload='initEmbeddedMessaging()'>
 </script>
-
-<!-- 🔥 Welcome Message Script -->
-<script type="text/javascript">
-  window.addEventListener("onEmbeddedMessagingEvent", function(event) {
-    const type = event?.detail?.eventType;
-    console.log("EVENT:", type);
-
-    // Only send message once the chat session actually exists
-    if (type === "conversationStarted") {
-      console.log("Chat widget is ready — sending welcome message");
-
-      embeddedservice.messaging.sendMessage({
-        message: {
-          type: "text",
-          text: "Hello! Welcome to Nuffield Health Support. An agent will be with you shortly."
-        },
-        sender: "business"
-      });
-    }
-  });
-</script>
-
+  
 </html>
