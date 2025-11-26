@@ -112,11 +112,11 @@
 	  console.log("Message sent event:", event);
 	
 	  // Most implementations expose the SSE payload on event.detail
-	  const payload = event.detail; 
+	  //const payload = event.detail; 
 	  // if (!payload || !payload.data || !payload.data.message) {
 	  //   return;
 	  // }
-		  console.log('Text = '+payload.conversationEntry);
+		  console.log('Text = '+event.CustomEvent.conversationEntry);
 		  
 	
 	  // Message text
