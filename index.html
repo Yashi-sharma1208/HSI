@@ -100,62 +100,59 @@
   <footer>
     © 2025 CityCare Hospital · All Rights Reserved
   </footer>
-<script type='text/javascript'>
-	function initEmbeddedMessaging() {
-		try {
-			embeddedservice_bootstrap.settings.language = 'en_US'; // For example, enter 'en' or 'en-US'
-      window.addEventListener("onEmbeddedMessagingConversationOpened", (event) => {
+  <script type='text/javascript'>
+    function initEmbeddedMessaging() {
+      try {
+        embeddedservice_bootstrap.settings.language = 'en_US'; // For example, enter 'en' or 'en-US'
+        window.addEventListener("onEmbeddedMessagingConversationOpened", (event) => {
           sendMessageToChat('Check agent availability');
-      });
-      window.addEventListener("onEmbeddedMessageSent", (event) => {
-	  // Full payload (for debugging)
-	  console.log("Message sent event:", event);
-	
-	  // Most implementations expose the SSE payload on event.detail
-	  //const payload = event.detail; 
-	  // if (!payload || !payload.data || !payload.data.message) {
-	  //   return;
-	  // }
-		  console.log('Test = '+event.detail.conversationEntry.entryPayload);
-      console.log('Text = '+event.detail.conversationEntry.entryPayload.abstractMessage);
-		  
-	
-	  // Message text
-	  // const messageText = payload.data.message.text;
-	  // console.log("Message text:", messageText);
-	});
+        });
+        window.addEventListener("onEmbeddedMessageSent", (event) => {
+          console.log("Raw Event:", event);
+
+          // Convert JSON string to object
+          const payload = JSON.parse(event.detail.conversationEntry.entryPayload);
+
+          // Extract text
+          const messageText = payload.abstractMessage?.staticContent?.text;
+
+          console.log("Extracted text:", messageText);
+        });
 
 
-			embeddedservice_bootstrap.init(
-				'00DdL00000fWhmz',
-				'Nuffield_Health_3',
-				'https://orgfarm-fc63a0ccc4-dev-ed.develop.my.site.com/ESWNuffieldHealth31764046308186',
-				{
-					scrt2URL: 'https://orgfarm-fc63a0ccc4-dev-ed.develop.my.salesforce-scrt.com'
-				}
-			);
-		} catch (err) {
-			console.error('Error loading Embedded Messaging: ', err);
-		}
-	};
-</script>
-<script>
+
+        embeddedservice_bootstrap.init(
+          '00DdL00000fWhmz',
+          'Nuffield_Health_3',
+          'https://orgfarm-fc63a0ccc4-dev-ed.develop.my.site.com/ESWNuffieldHealth31764046308186',
+          {
+            scrt2URL: 'https://orgfarm-fc63a0ccc4-dev-ed.develop.my.salesforce-scrt.com'
+          }
+        );
+      } catch (err) {
+        console.error('Error loading Embedded Messaging: ', err);
+      }
+    };
+  </script>
+  <script>
     function sendMessageToChat(message) {
       setTimeout(() => {
-          embeddedservice_bootstrap.utilAPI.sendTextMessage(message)
-            .then(() => {
-              console.log("Message sent");
-            })
-            .catch(() => {
-              console.log("Message not sent");
-            })
-            .finally(() => {
-              console.log("Message sent - finally");
-            });
-        }, 8000);
+        embeddedservice_bootstrap.utilAPI.sendTextMessage(message)
+          .then(() => {
+            console.log("Message sent");
+          })
+          .catch(() => {
+            console.log("Message not sent");
+          })
+          .finally(() => {
+            console.log("Message sent - finally");
+          });
+      }, 8000);
     }
-</script>
-<script type='text/javascript' src='https://orgfarm-fc63a0ccc4-dev-ed.develop.my.site.com/ESWNuffieldHealth31764046308186/assets/js/bootstrap.min.js' onload='initEmbeddedMessaging()'></script>
+  </script>
+  <script type='text/javascript'
+    src='https://orgfarm-fc63a0ccc4-dev-ed.develop.my.site.com/ESWNuffieldHealth31764046308186/assets/js/bootstrap.min.js'
+    onload='initEmbeddedMessaging()'></script>
 
 
 </body>
