@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -82,7 +83,9 @@
   </header>
 
   <section class="hero">
-    <img src="https://img.freepik.com/free-photo/hospital-building_1127-3375.jpg?w=1380&t=st=1732617850~exp=1732618450~hmac=dummy" alt="Hospital Building">
+    <img
+      src="https://img.freepik.com/free-photo/hospital-building_1127-3375.jpg?w=1380&t=st=1732617850~exp=1732618450~hmac=dummy"
+      alt="Hospital Building">
     <h2>Welcome to CityCare Hospital</h2>
     <p>
       We are committed to providing compassionate healthcare, advanced treatment,
@@ -98,28 +101,42 @@
     © 2025 CityCare Hospital · All Rights Reserved
   </footer>
 
-<!-- Do Not Modify Script -->
-<script type='text/javascript'>
-	function initEmbeddedMessaging() {
-		try {
-			embeddedservice_bootstrap.settings.language = 'en_US';
-			 window.addEventListener("onEmbeddedMessagingConversationOpened", (event) => {
-                embeddedservice_bootstrap.utilAPI.sendTextMessage('Check Agent Availability');
-            });
-			embeddedservice_bootstrap.init(
-				'00DdL00000fWhmz',
-				'Nuffield_Health_3',
-				'https://orgfarm-fc63a0ccc4-dev-ed.develop.my.site.com/ESWNuffieldHealth31764046308186',
-				{
-					scrt2URL: 'https://orgfarm-fc63a0ccc4-dev-ed.develop.my.salesforce-scrt.com'
-				}
-			);
-		} catch (err) {
-			console.error('Error loading Embedded Messaging: ', err);
-		}
-	};
-</script>
-<script type='text/javascript' src='https://orgfarm-fc63a0ccc4-dev-ed.develop.my.site.com/ESWNuffieldHealth31764046308186/assets/js/bootstrap.min.js' onload='initEmbeddedMessaging()'></script>
+  <!-- Do Not Modify Script -->
+  <script type='text/javascript'>
+    function initEmbeddedMessaging() {
+      try {
+        embeddedservice_bootstrap.settings.language = 'en_US';
+        window.addEventListener("onEmbeddedMessagingConversationOpened", (event) => {
+          setTimeout(() => {
+            embeddedservice_bootstrap.utilAPI.sendTextMessage('Check desk availability');
+              .then(() => {
+                console.log("Message sent");
+              })
+              .catch(() => {
+                console.log("Message not sent");
+              })
+              .finally(() => {
+                console.log("Message sent - finally");
+              });
+          }, 3000);
+        });
+        embeddedservice_bootstrap.init(
+          '00DdL00000fWhmz',
+          'Nuffield_Health_3',
+          'https://orgfarm-fc63a0ccc4-dev-ed.develop.my.site.com/ESWNuffieldHealth31764046308186',
+          {
+            scrt2URL: 'https://orgfarm-fc63a0ccc4-dev-ed.develop.my.salesforce-scrt.com'
+          }
+        );
+      } catch (err) {
+        console.error('Error loading Embedded Messaging: ', err);
+      }
+    };
+  </script>
+  <script type='text/javascript'
+    src='https://orgfarm-fc63a0ccc4-dev-ed.develop.my.site.com/ESWNuffieldHealth31764046308186/assets/js/bootstrap.min.js'
+    onload='initEmbeddedMessaging()'></script>
 
 </body>
+
 </html>
