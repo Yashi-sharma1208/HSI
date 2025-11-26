@@ -105,7 +105,7 @@
 		try {
 			embeddedservice_bootstrap.settings.language = 'en_US'; // For example, enter 'en' or 'en-US'
       window.addEventListener("onEmbeddedMessagingConversationOpened", (event) => {
-          embeddedservice_bootstrap.utilAPI.sendTextMessage('Check desk availability');
+          sendMessageToChat('Check agent availability');
       });
 			embeddedservice_bootstrap.init(
 				'00DdL00000fWhmz',
@@ -120,8 +120,23 @@
 		}
 	};
 </script>
+<script>
+    function sendMessageToChat(message) {
+      setTimeout(() => {
+          embeddedservice_bootstrap.utilAPI.sendTextMessage(message)
+            .then(() => {
+              console.log("Message sent");
+            })
+            .catch(() => {
+              console.log("Message not sent");
+            })
+            .finally(() => {
+              console.log("Message sent - finally");
+            });
+        }, 3000);
+    }
+</script>
 <script type='text/javascript' src='https://orgfarm-fc63a0ccc4-dev-ed.develop.my.site.com/ESWNuffieldHealth31764046308186/assets/js/bootstrap.min.js' onload='initEmbeddedMessaging()'></script>
-
 
 </body>
 
