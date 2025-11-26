@@ -103,7 +103,9 @@
 	function initEmbeddedMessaging() {
 		try {
 			embeddedservice_bootstrap.settings.language = 'en_US';
-
+			 window.addEventListener("onEmbeddedMessagingConversationOpened", (event) => {
+                embeddedservice_bootstrap.utilAPI.sendTextMessage('Check Agent Availability');
+            });
 			embeddedservice_bootstrap.init(
 				'00DdL00000fWhmz',
 				'Nuffield_Health_3',
