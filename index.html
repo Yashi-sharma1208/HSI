@@ -101,19 +101,13 @@
     © 2025 CityCare Hospital · All Rights Reserved
   </footer>
 
-  <!-- Do Not Modify Script -->
-  <script type='text/javascript'>
-    function initEmbeddedMessaging() {
-      try {
-        embeddedservice_bootstrap.settings.language = 'en_US';
-         <script type='text/javascript'>
+<script type='text/javascript'>
 	function initEmbeddedMessaging() {
 		try {
 			embeddedservice_bootstrap.settings.language = 'en_US'; // For example, enter 'en' or 'en-US'
-
-            window.addEventListener("onEmbeddedMessagingConversationOpened", (event) => {
-                embeddedservice_bootstrap.utilAPI.sendTextMessage('Check desk avialability');
-            });
+      window.addEventListener("onEmbeddedMessagingConversationOpened", (event) => {
+          embeddedservice_bootstrap.utilAPI.sendTextMessage('Check desk availability');
+      });
 			embeddedservice_bootstrap.init(
 				'00DdL00000fWhmz',
 				'Nuffield_Health_3',
@@ -129,22 +123,6 @@
 </script>
 <script type='text/javascript' src='https://orgfarm-fc63a0ccc4-dev-ed.develop.my.site.com/ESWNuffieldHealth31764046308186/assets/js/bootstrap.min.js' onload='initEmbeddedMessaging()'></script>
 
-        embeddedservice_bootstrap.init(
-          '00DdL00000fWhmz',
-          'Nuffield_Health_3',
-          'https://orgfarm-fc63a0ccc4-dev-ed.develop.my.site.com/ESWNuffieldHealth31764046308186',
-          {
-            scrt2URL: 'https://orgfarm-fc63a0ccc4-dev-ed.develop.my.salesforce-scrt.com'
-          }
-        );
-      } catch (err) {
-        console.error('Error loading Embedded Messaging: ', err);
-      }
-    };
-  </script>
-  <script type='text/javascript'
-    src='https://orgfarm-fc63a0ccc4-dev-ed.develop.my.site.com/ESWNuffieldHealth31764046308186/assets/js/bootstrap.min.js'
-    onload='initEmbeddedMessaging()'></script>
 
 </body>
 
