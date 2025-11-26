@@ -163,40 +163,23 @@
 <!-- 🔧 Initialize Embedded Messaging -->
 <!-- 🔧 Initialize Embedded Messaging -->
 <script type='text/javascript'>
-  function initEmbeddedMessaging() {
-    try {
-      embeddedservice_bootstrap.settings.language = 'en_US'; // Set language if needed
- 
-      embeddedservice_bootstrap.init(
-        '00DUE0000050HmZ',
-        'HS_Live_Chat',
-        'https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1762863013240',
-        {
-          scrt2URL: 'https://hsiuk--fullcopy.sandbox.my.salesforce-scrt.com'
-        }
-      );
-    } catch (err) {
-      console.error('Error loading Embedded Messaging: ', err);
-    }
-  }
- 
-  // Wait for the embedded messaging framework to load
-  window.addEventListener("onEmbeddedMessagingReady", e => {
-    console.log("Embedded Messaging Ready");
- 
-    // ✅ Pass your hidden prechat field here
-    embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
-      "Brand": "HSI"  // <-- your brand name value here
-    });
- 
-    console.log("Hidden Prechat Field 'Brand' set to OrgFarm");
-  });
+	function initEmbeddedMessaging() {
+		try {
+			embeddedservice_bootstrap.settings.language = 'en_US'; // For example, enter 'en' or 'en-US'
+
+			embeddedservice_bootstrap.init(
+				'00DdL00000fWhmz',
+				'Nuffield_Health_3',
+				'https://orgfarm-fc63a0ccc4-dev-ed.develop.my.site.com/ESWNuffieldHealth31764046308186',
+				{
+					scrt2URL: 'https://orgfarm-fc63a0ccc4-dev-ed.develop.my.salesforce-scrt.com'
+				}
+			);
+		} catch (err) {
+			console.error('Error loading Embedded Messaging: ', err);
+		}
+	};
 </script>
- 
-<!-- Keep this line as is -->
-<script type='text/javascript' 
-        src='https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1762863013240/assets/js/bootstrap.min.js' 
-        onload='initEmbeddedMessaging()'>
-</script>
+<script type='text/javascript' src='https://orgfarm-fc63a0ccc4-dev-ed.develop.my.site.com/ESWNuffieldHealth31764046308186/assets/js/bootstrap.min.js' onload='initEmbeddedMessaging()'></script>
 
 </html>
