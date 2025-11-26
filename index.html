@@ -107,9 +107,8 @@
       window.addEventListener("onEmbeddedMessagingConversationOpened", (event) => {
           sendMessageToChat('Check agent availability');
       });
-      window.addEventListener("onEmbeddedMessagingConversationRouted ", (event) => {
-          console.log('Chat is routed');
-          alert('Chat is routed');
+      window.addEventListener("onEmbeddedMessageSent",(event)=>{
+          console.log('Message sentttt');
       });
 			embeddedservice_bootstrap.init(
 				'00DdL00000fWhmz',
@@ -137,7 +136,7 @@
             .finally(() => {
               console.log("Message sent - finally");
             });
-        }, 8000);
+        }, 3000);
     }
 </script>
 <script type='text/javascript' src='https://orgfarm-fc63a0ccc4-dev-ed.develop.my.site.com/ESWNuffieldHealth31764046308186/assets/js/bootstrap.min.js' onload='initEmbeddedMessaging()'></script>
