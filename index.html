@@ -123,8 +123,22 @@
     function initEmbeddedMessaging() {
       try {
         embeddedservice_bootstrap.settings.language = 'en_US';
-  
-          console.log("Initializing chat after 4 seconds...");
+        window.addEventListener("onEmbeddedMessageSent", (event) => {
+        console.log("Raw Event:", event);
+ 
+        // Convert JSON string to object
+        const payload = JSON.parse(event.detail.conversationEntry.entryPayload);
+ 
+        //Extract text
+        const messageText = payload.abstractMessage?.staticContent?.text;
+ 
+        console.log("Extracted text:", messageText);
+ 
+        if(messageText == 'Transferring chat to agent.'){
+        console.log('Chat Transfered');
+        alert('Chat Transfered');
+        }
+        });
 
           embeddedservice_bootstrap.init(
             '00DdL00000fWhmz',
