@@ -136,7 +136,7 @@
 
           if (messageText == 'Transferring chat to agent.') {
             console.log('Chat Transfered');
-            embeddedservice_bootstrap.userVerificationAPI.clearSession(true)
+            embeddedservice_bootstrap.utilAPI.sendTextMessage('Stop');
 
             // Call the CXone script when condition is true
             //startCxoneChat();
