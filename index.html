@@ -100,6 +100,34 @@
   <footer>
     © 2025 CityCare Hospital · All Rights Reserved
   </footer>
+  <script>
+    async function getWeather() {
+        const apiKey = "d08a08a34bb64ee2b21121009252111"; // Replace with your actual WeatherAPI key
+        const city = "Delhi";
+
+        const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}`;
+
+        try {
+            const response = await fetch(url);
+
+            if (!response.ok) {
+                throw new Error("Failed to fetch weather data");
+            }
+
+            const data = await response.json();
+
+            document.getElementById("result").innerHTML = `
+                <strong>${data.location.name}, ${data.location.country}</strong><br><br>
+                Temperature: ${data.current.temp_c}°C<br>
+                Condition: ${data.current.condition.text}<br>
+                Humidity: ${data.current.humidity}%<br>
+                Wind Speed: ${data.current.wind_kph} km/h
+            `;
+        } catch (error) {
+            document.getElementById("result").innerHTML = error.message;
+        }
+    }
+</script>
   <script type='text/javascript'>
     function initEmbeddedMessaging() {
       try {
@@ -108,37 +136,21 @@
           sendMessageToChat('Check agent availability');
         });
         window.addEventListener("onEmbeddedMessageSent", (event) => {
-        console.log("Raw Event:", event);
+        //console.log("Raw Event:", event);
 
-        Convert JSON string to object
+        // Convert JSON string to object
         const payload = JSON.parse(event.detail.conversationEntry.entryPayload);
 
-        Extract text
+        // Extract text
         const messageText = payload.abstractMessage?.staticContent?.text;
 
         console.log("Extracted text:", messageText);
 
         if(messageText == 'Transferring chat to agent.'){
-         console.log('Chat Transfered');
+        console.log('Chat Transfered');
         alert('Chat Transfered');
         }
         });
-        /*window.addEventListener("onEmbeddedMessagingConversationRouted", (event) => {
-          alert('Chat is transferred');
-
-          // Logs entire event object
-          console.log("Full Event:", event);
-
-          // Logs details payload only
-          console.log("Event Details:", event.detail);
-
-          // If it contains conversation or agent details
-          console.log("Conversation ID:", event.detail?.conversationId);
-          console.log("Agent Name:", event.detail?.agentName);
-        });*/
-
-
-
 
         embeddedservice_bootstrap.init(
           '00DdL00000fWhmz',
@@ -177,3 +189,8 @@
 </body>
 
 </html>
+
+
+
+
+"{"entryType":"RoutingResult","id":"abc0b587-52bc-4897-b25f-5d3e645eac75","recordId":"0MwdL00000Cd2pX","errorMessages":[],"pendingServiceRoutingId":"0JRdL00000Bx7gf","skipRouterCPRemovalIfNoRoutingFailures":true,"workOwnerId":null,"routingType":"Initial","estimatedWaitTime":{"estimatedWaitTimeInSeconds":null,"isEWTRequested":false},"failureReason":"","failureType":"None","isExternallyRouted":false,"cancelReason":null,"routingConfigurationDetails":{"routingConfigurationType":"QueueRoutingType","queueId":"00GdL00000M9JUz"}}"
