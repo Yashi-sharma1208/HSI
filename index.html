@@ -100,62 +100,21 @@
   <footer>
     © 2025 CityCare Hospital · All Rights Reserved
   </footer>
-  <script type='text/javascript'>
-    function initEmbeddedMessaging() {
-      try {
-        embeddedservice_bootstrap.settings.language = 'en_US'; // For example, enter 'en' or 'en-US'
-        window.addEventListener("onEmbeddedMessagingConversationOpened", (event) => {
-          sendMessageToChat('Check agent availability');
-        });
-        window.addEventListener("onEmbeddedMessageSent", (event) => {
-        //console.log("Raw Event:", event);
+<script>
+  const apiKey = "d08a08a34bb64ee2b21121009252111";
+const city = "Delhi";
 
-        // Convert JSON string to object
-        const payload = JSON.parse(event.detail.conversationEntry.entryPayload);
+const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}`;
 
-        // Extract text
-        const messageText = payload.abstractMessage?.staticContent?.text;
+fetch(url)
+  .then(response => response.json())
+  .then(data => {
+    const temperature = data.current.temp_c;
+    console.log("Temperature in", city, ":", temperature, "°C");
+  })
+  .catch(error => console.error("Error fetching weather:", error));
 
-        console.log("Extracted text:", messageText);
-
-        if(messageText == 'Transferring chat to agent.'){
-        console.log('Chat Transfered');
-        alert('Chat Transfered');
-        }
-        });
-
-        embeddedservice_bootstrap.init(
-          '00DdL00000fWhmz',
-          'Nuffield_Health_3',
-          'https://orgfarm-fc63a0ccc4-dev-ed.develop.my.site.com/ESWNuffieldHealth31764046308186',
-          {
-            scrt2URL: 'https://orgfarm-fc63a0ccc4-dev-ed.develop.my.salesforce-scrt.com'
-          }
-        );
-      } catch (err) {
-        console.error('Error loading Embedded Messaging: ', err);
-      }
-    };
-  </script>
-  <script>
-    function sendMessageToChat(message) {
-      setTimeout(() => {
-        embeddedservice_bootstrap.utilAPI.sendTextMessage(message)
-          .then(() => {
-            console.log("Message sent");
-          })
-          .catch(() => {
-            console.log("Message not sent");
-          })
-          .finally(() => {
-            console.log("Message sent - finally");
-          });
-      }, 8000);
-    }
-  </script>
-  <script type='text/javascript'
-    src='https://orgfarm-fc63a0ccc4-dev-ed.develop.my.site.com/ESWNuffieldHealth31764046308186/assets/js/bootstrap.min.js'
-    onload='initEmbeddedMessaging()'></script>
+</script>
 
 
 </body>
