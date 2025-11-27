@@ -124,37 +124,38 @@
       try {
         embeddedservice_bootstrap.settings.language = 'en_US';
         window.addEventListener("onEmbeddedMessageSent", (event) => {
-        console.log("Raw Event:", event);
- 
-        // Convert JSON string to object
-        const payload = JSON.parse(event.detail.conversationEntry.entryPayload);
- 
-        //Extract text
-        const messageText = payload.abstractMessage?.staticContent?.text;
- 
-        console.log("Extracted text:", messageText);
- 
-        if(messageText == 'Transferring chat to agent.'){
-        console.log('Chat Transfered');
-        alert('Chat Transfered');
-        }
+          console.log("Raw Event:", event);
+
+          // Convert JSON string to object
+          const payload = JSON.parse(event.detail.conversationEntry.entryPayload);
+
+          //Extract text
+          const messageText = payload.abstractMessage?.staticContent?.text;
+
+          console.log("Extracted text:", messageText);
+
+          if (messageText == 'Transferring chat to agent.') {
+            console.log('Chat Transfered');
+            // Call the CXone script when condition is true
+            startCxoneChat();
+          }
         });
 
-          embeddedservice_bootstrap.init(
-            '00DdL00000fWhmz',
-            'Nuffield_Health_3',
-            'https://orgfarm-fc63a0ccc4-dev-ed.develop.my.site.com/ESWNuffieldHealth31764046308186',
-            {
-              scrt2URL: 'https://orgfarm-fc63a0ccc4-dev-ed.develop.my.salesforce-scrt.com'
-            }
-          );
+        embeddedservice_bootstrap.init(
+          '00DdL00000fWhmz',
+          'Nuffield_Health_3',
+          'https://orgfarm-fc63a0ccc4-dev-ed.develop.my.site.com/ESWNuffieldHealth31764046308186',
+          {
+            scrt2URL: 'https://orgfarm-fc63a0ccc4-dev-ed.develop.my.salesforce-scrt.com'
+          }
+        );
 
         // When widget is ready - attach weather
         window.addEventListener("onEmbeddedMessagingReady", () => {
           console.log("Chat ready. Sending temperature...");
 
           embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
-            "Temp" : temperature.toString()
+            "Temp": temperature.toString()
           });
 
           console.log("Temperature added:", temperature);
@@ -163,6 +164,40 @@
         console.error("Error loading Embedded Messaging:", err);
       }
     }
+
+    function startCxoneChat() {
+      (function (n, u) {
+        window.CXoneDfo = n;
+        window[n] = window[n] || function () {
+          (window[n].q = window[n].q || []).push(arguments);
+        };
+        window[n].u = u;
+
+        const e = document.createElement("script");
+        e.type = "module";
+        e.src = u + "?" + Math.round(Date.now() / 1000 / 3600);
+        document.head.appendChild(e);
+      })("cxone", "https://web-modules-de-eu1.niceincontact.com/loader/1/loader.js");
+
+      // Run CXone configuration after script loads
+      setTimeout(() => {
+        cxone("init", "1150", "chat_8588f97c-23cc-4dee-b24c-35e612849e91");
+        cxone("chat", "init", 1150, "chat_8588f97c-23cc-4dee-b24c-35e612849e91");
+
+        cxone("chat", "setCustomerName", "Steven Emerson");
+        cxone("chat", "setCustomField", "saeccdept", "Sales");
+
+        cxone("chat", "sendFirstMessageAutomatically", "Chat has been initiated");
+        cxone("chat", "hideFirstSentMessage", false);
+
+        cxone("chat", "hidePreSurvey");
+        cxone("chat", "openChatWindow");
+        cxone("chat", "autoStartSession");
+
+        console.log("CXone Chat Started.");
+      }, 2000);
+    }
+
 
     // Run weather first then load chat
     getWeather().then(() => {
