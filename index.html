@@ -84,9 +84,12 @@
   </header>
 
   <section class="hero">
-    <img src="https://img.freepik.com/free-photo/hospital-building_1127-3375.jpg?w=1380&t=st=1732617850~exp=1732618450~hmac=dummy" alt="Hospital Building">
+    <img
+      src="https://img.freepik.com/free-photo/hospital-building_1127-3375.jpg?w=1380&t=st=1732617850~exp=1732618450~hmac=dummy"
+      alt="Hospital Building">
     <h2>Welcome to CityCare Hospital</h2>
-    <p>We are committed to providing compassionate healthcare, advanced treatment, and continuous support for every patient and family.</p>
+    <p>We are committed to providing compassionate healthcare, advanced treatment, and continuous support for every
+      patient and family.</p>
   </section>
 
   <div class="chat-hint">
@@ -97,66 +100,67 @@
     © 2025 CityCare Hospital · All Rights Reserved
   </footer>
 
-<script>
-let temperature = null; // global variable so chat can use it
+  <script>
+    let temperature = null; // global variable so chat can use it
 
-// Fetch Weather
-function getWeather() {
-  const apiKey = "d08a08a34bb64ee2b21121009252111";
-  const city = "Delhi, India";
+    // Fetch Weather
+    function getWeather() {
+      const apiKey = "d08a08a34bb64ee2b21121009252111";
+      const city = "Delhi, India";
 
-  const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${encodeURIComponent(city)}`;
+      const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${encodeURIComponent(city)}`;
 
-  return fetch(url)
-    .then(response => response.json())
-    .then(data => {
-      temperature = data.current.temp_c;
-      console.log("Temperature in", city, ":", temperature, "°C");
-    })
-    .catch(error => console.error("Error fetching weather:", error));
-}
+      return fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          temperature = data.current.temp_c;
+          console.log("Temperature in", city, ":", temperature, "°C");
+        })
+        .catch(error => console.error("Error fetching weather:", error));
+    }
 
-// Init Salesforce Messaging
-function initEmbeddedMessaging() {
-  try {
-    embeddedservice_bootstrap.settings.language = 'en_US';
+    // Init Salesforce Messaging
+    function initEmbeddedMessaging() {
+      try {
+        embeddedservice_bootstrap.settings.language = 'en_US';
 
-    setTimeout(() => {
-      console.log("Initializing chat after 4 seconds...");
+        setTimeout(() => {
+          console.log("Initializing chat after 4 seconds...");
 
-      embeddedservice_bootstrap.init(
-        '00DdL00000fWhmz',
-        'Nuffield_Health_3',
-        'https://orgfarm-fc63a0ccc4-dev-ed.develop.my.site.com/ESWNuffieldHealth31764046308186',
-        {
-          scrt2URL: 'https://orgfarm-fc63a0ccc4-dev-ed.develop.my.salesforce-scrt.com'
-        }
-      );
-    }, 4000);
+          embeddedservice_bootstrap.init(
+            '00DdL00000fWhmz',
+            'Nuffield_Health_3',
+            'https://orgfarm-fc63a0ccc4-dev-ed.develop.my.site.com/ESWNuffieldHealth31764046308186',
+            {
+              scrt2URL: 'https://orgfarm-fc63a0ccc4-dev-ed.develop.my.salesforce-scrt.com'
+            }
+          );
+        }, 4000);
 
-    // When widget is ready - attach weather
-    window.addEventListener("onEmbeddedMessagingReady", () => {
-      console.log("Chat ready. Sending temperature...");
+        // When widget is ready - attach weather
+        window.addEventListener("onEmbeddedMessagingReady", () => {
+          console.log("Chat ready. Sending temperature...");
 
-      embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
-        Temp: temperature
-      });
+          embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
+            "Temp" : temperature
+          });
 
-      console.log("Temperature added:", temperature);
+          console.log("Temperature added:", temperature);
+        });
+      } catch (err) {
+        console.error("Error loading Embedded Messaging:", err);
+      }
+    }
+
+    // Run weather first then load chat
+    getWeather().then(() => {
+      const script = document.createElement("script");
+      script.src = "https://orgfarm-fc63a0ccc4-dev-ed.develop.my.site.com/ESWNuffieldHealth31764046308186/assets/js/bootstrap.min.js";
+      script.onload = initEmbeddedMessaging;
+      document.body.appendChild(script);
     });
-  } catch (err) {
-    console.error("Error loading Embedded Messaging:", err);
-  }
-}
-
-// Run weather first then load chat
-getWeather().then(() => {
-  const script = document.createElement("script");
-  script.src = "https://orgfarm-fc63a0ccc4-dev-ed.develop.my.site.com/ESWNuffieldHealth31764046308186/assets/js/bootstrap.min.js";
-  script.onload = initEmbeddedMessaging;
-  document.body.appendChild(script);
-});
-</script>
+  </script>
 
 </body>
+
 </html>
