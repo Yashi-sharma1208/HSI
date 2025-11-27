@@ -100,31 +100,23 @@
   <footer>
     © 2025 CityCare Hospital · All Rights Reserved
   </footer>
-  <script>
+<script>
     async function getWeather() {
-        const apiKey = "d08a08a34bb64ee2b21121009252111"; // Replace with your actual WeatherAPI key
-        const city = "Delhi";
-
-        const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}`;
+        const apiKey = "YOUR_API_KEY"; // Replace with your actual key
+        const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=Delhi`;
 
         try {
             const response = await fetch(url);
-
             if (!response.ok) {
                 throw new Error("Failed to fetch weather data");
             }
 
-            const data = await response.json();
+            const weatherData = await response.json(); // Store in variable
 
-            document.getElementById("result").innerHTML = `
-                <strong>${data.location.name}, ${data.location.country}</strong><br><br>
-                Temperature: ${data.current.temp_c}°C<br>
-                Condition: ${data.current.condition.text}<br>
-                Humidity: ${data.current.humidity}%<br>
-                Wind Speed: ${data.current.wind_kph} km/h
-            `;
+            console.log("Weather API Response:", weatherData);
+
         } catch (error) {
-            document.getElementById("result").innerHTML = error.message;
+            console.error(error.message);
         }
     }
 </script>
