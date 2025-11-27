@@ -123,8 +123,7 @@
     function initEmbeddedMessaging() {
       try {
         embeddedservice_bootstrap.settings.language = 'en_US';
-
-        setTimeout(() => {
+  
           console.log("Initializing chat after 4 seconds...");
 
           embeddedservice_bootstrap.init(
@@ -135,7 +134,6 @@
               scrt2URL: 'https://orgfarm-fc63a0ccc4-dev-ed.develop.my.salesforce-scrt.com'
             }
           );
-        }, 4000);
 
         // When widget is ready - attach weather
         window.addEventListener("onEmbeddedMessagingReady", () => {
