@@ -107,23 +107,23 @@
         window.addEventListener("onEmbeddedMessagingConversationOpened", (event) => {
           sendMessageToChat('Check agent availability');
         });
-        //window.addEventListener("onEmbeddedMessageSent", (event) => {
-        //console.log("Raw Event:", event);
+        window.addEventListener("onEmbeddedMessageSent", (event) => {
+        console.log("Raw Event:", event);
 
-        // Convert JSON string to object
-        //const payload = JSON.parse(event.detail.conversationEntry.entryPayload);
+        Convert JSON string to object
+        const payload = JSON.parse(event.detail.conversationEntry.entryPayload);
 
-        // Extract text
-        //const messageText = payload.abstractMessage?.staticContent?.text;
+        Extract text
+        const messageText = payload.abstractMessage?.staticContent?.text;
 
-        //console.log("Extracted text:", messageText);
+        console.log("Extracted text:", messageText);
 
-        //if(messageText == 'Transferring chat to agent.'){
-        //  console.log('Chat Transfered');
-        //alert('Chat Transfered');
-        //}
-        //});
-        window.addEventListener("onEmbeddedMessagingConversationRouted", (event) => {
+        if(messageText == 'Transferring chat to agent.'){
+         console.log('Chat Transfered');
+        alert('Chat Transfered');
+        }
+        });
+        /*window.addEventListener("onEmbeddedMessagingConversationRouted", (event) => {
           alert('Chat is transferred');
 
           // Logs entire event object
@@ -135,7 +135,7 @@
           // If it contains conversation or agent details
           console.log("Conversation ID:", event.detail?.conversationId);
           console.log("Agent Name:", event.detail?.agentName);
-        });
+        });*/
 
 
 
