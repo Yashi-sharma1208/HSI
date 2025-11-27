@@ -99,86 +99,63 @@
 
   <footer>
     © 2025 CityCare Hospital · All Rights Reserved
-  </footer><script>
-    async function getWeatherBeforeChatLoads() {
-
-        const apiKey = "d08a08a34bb64ee2b21121009252111";
-        const city = "Delhi";
-        const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}`;
-
-        try {
-            const response = await fetch(url);
-
-            if (!response.ok) {
-                throw new Error("Failed to fetch weather data");
-            }
-
-            const data = await response.json();
-
-            // Extract only temperature
-            const temperature = data.current.temp_c;
-            console.log("Temperature:", temperature);
-
-            // Once temperature is fetched, now initialize chat
-            initEmbeddedMessaging();
-
-        } catch (error) {
-            console.error(error.message);
-        }
-    }
-</script>
-
-<script>
+  </footer>
+  <script type='text/javascript'>
     function initEmbeddedMessaging() {
-        try {
+      try {
+        embeddedservice_bootstrap.settings.language = 'en_US'; // For example, enter 'en' or 'en-US'
+        window.addEventListener("onEmbeddedMessagingConversationOpened", (event) => {
+          sendMessageToChat('Check agent availability');
+        });
+        window.addEventListener("onEmbeddedMessageSent", (event) => {
+        //console.log("Raw Event:", event);
 
-            embeddedservice_bootstrap.settings.language = 'en_US';
+        // Convert JSON string to object
+        const payload = JSON.parse(event.detail.conversationEntry.entryPayload);
 
-            window.addEventListener("onEmbeddedMessagingConversationOpened", () => {
-                sendMessageToChat('Check agent availability');
-            });
+        // Extract text
+        const messageText = payload.abstractMessage?.staticContent?.text;
 
-            window.addEventListener("onEmbeddedMessageSent", (event) => {
-                const payload = JSON.parse(event.detail.conversationEntry.entryPayload);
-                const messageText = payload.abstractMessage?.staticContent?.text;
+        console.log("Extracted text:", messageText);
 
-                console.log("Extracted text:", messageText);
-
-                if (messageText === 'Transferring chat to agent.') {
-                    console.log('Chat Transfered');
-                    alert('Chat Transfered');
-                }
-            });
-
-            embeddedservice_bootstrap.init(
-                '00DdL00000fWhmz',
-                'Nuffield_Health_3',
-                'https://orgfarm-fc63a0ccc4-dev-ed.develop.my.site.com/ESWNuffieldHealth31764046308186',
-                { scrt2URL: 'https://orgfarm-fc63a0ccc4-dev-ed.develop.my.salesforce-scrt.com' }
-            );
-
-        } catch (err) {
-            console.error('Error loading Embedded Messaging: ', err);
+        if(messageText == 'Transferring chat to agent.'){
+        console.log('Chat Transfered');
+        alert('Chat Transfered');
         }
-    }
-</script>
+        });
 
-<script>
+        embeddedservice_bootstrap.init(
+          '00DdL00000fWhmz',
+          'Nuffield_Health_3',
+          'https://orgfarm-fc63a0ccc4-dev-ed.develop.my.site.com/ESWNuffieldHealth31764046308186',
+          {
+            scrt2URL: 'https://orgfarm-fc63a0ccc4-dev-ed.develop.my.salesforce-scrt.com'
+          }
+        );
+      } catch (err) {
+        console.error('Error loading Embedded Messaging: ', err);
+      }
+    };
+  </script>
+  <script>
     function sendMessageToChat(message) {
-        setTimeout(() => {
-            embeddedservice_bootstrap.utilAPI.sendTextMessage(message)
-                .then(() => console.log("Message sent"))
-                .catch(() => console.log("Message not sent"))
-                .finally(() => console.log("Message sent - finally"));
-        }, 8000);
+      setTimeout(() => {
+        embeddedservice_bootstrap.utilAPI.sendTextMessage(message)
+          .then(() => {
+            console.log("Message sent");
+          })
+          .catch(() => {
+            console.log("Message not sent");
+          })
+          .finally(() => {
+            console.log("Message sent - finally");
+          });
+      }, 8000);
     }
-</script>
-
-<script 
-    src="https://orgfarm-fc63a0ccc4-dev-ed.develop.my.site.com/ESWNuffieldHealth31764046308186/assets/js/bootstrap.min.js" 
-    onload="getWeatherBeforeChatLoads()">
-</script>
-
+  </script>
+  <script type='text/javascript'
+    src='https://orgfarm-fc63a0ccc4-dev-ed.develop.my.site.com/ESWNuffieldHealth31764046308186/assets/js/bootstrap.min.js'
+    onload='initEmbeddedMessaging()'></script>
 
 
 </body>
