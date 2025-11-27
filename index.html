@@ -134,12 +134,12 @@
 
           console.log("Extracted text:", messageText);
 
-          if (messageText == 'Transferring chat to agent.') {
+          if (messageText.startsWith("Case has been created for you")) {
             console.log('Chat Transfered');
-            embeddedservice_bootstrap.utilAPI.sendTextMessage('Stop');
+            //embeddedservice_bootstrap.utilAPI.sendTextMessage('Stop');
 
             // Call the CXone script when condition is true
-            //startCxoneChat();
+            startCxoneChat();
             //embeddedservice_bootstrap.utilAPI.hideChatButton();
           }
         });
