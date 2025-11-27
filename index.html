@@ -166,10 +166,7 @@
 
     // Run weather first then load chat
     getWeather().then(() => {
-      const script = document.createElement("script");
-      script.src = "https://orgfarm-fc63a0ccc4-dev-ed.develop.my.site.com/ESWNuffieldHealth31764046308186/assets/js/bootstrap.min.js";
-      script.onload = initEmbeddedMessaging;
-      document.body.appendChild(script);
+      src='https://orgfarm-fc63a0ccc4-dev-ed.develop.my.site.com/ESWNuffieldHealth31764046308186/assets/js/bootstrap.min.js%27onload='initEmbeddedMessaging()'>
     });
   </script>
 
