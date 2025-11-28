@@ -142,7 +142,7 @@
 
           console.log("Extracted text:", messageText);
 
-          if (messageText.includes("Case has been created for you")) {
+          if (messageText.includes("Transferring chat to the support executive")) {
 
             const caseNumberMatch = messageText.match(/:\s*(\d{5,10})/);
             const caseNumber = caseNumberMatch ? caseNumberMatch[1] : null;
@@ -192,7 +192,7 @@
 
         const e = document.createElement("script");
         e.type = "module";
-        e.src = `https://web-modules-de-eu1.niceincontact.com/loader/1/loader.js?caseId=${caseId}&firstName=${encodeURIComponent(firstName)}&lastName=${encodeURIComponent(lastName)}`;
+        e.src = `https://web-modules-de-eu1.niceincontact.com/loader/1/loader.js}`;
         document.head.appendChild(e);
       })("cxone", "https://web-modules-de-eu1.niceincontact.com/loader/1/loader.js");
 
