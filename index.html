@@ -134,7 +134,7 @@
 
           console.log("Extracted text:", messageText);
 
-          if (messageText.startsWith("Case has been created for you")) {
+          if (messageText.includes("Case has been created for you")) {
             console.log('Chat Transfered');
             //embeddedservice_bootstrap.utilAPI.sendTextMessage('Stop');
 
