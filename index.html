@@ -123,9 +123,12 @@
     function initEmbeddedMessaging() {
       try {
         embeddedservice_bootstrap.settings.language = 'en_US';
-        window.addEventListener("onEmbeddedMessagingPreChatSubmitted", (event) => {
-          console.log("Prechat submitted:", event.detail);
-        })
+          window.addEventListener("onEmbeddedMessagingPreChatSubmitted", ({ detail }) => {
+            const { _firstName, _lastName } = detail.prechatSubmitFields;
+
+            console.log(`User Name: ${_firstName} ${_lastName}`);
+          });
+
         window.addEventListener("onEmbeddedMessageSent", (event) => {
           console.log("Raw Event:", event);
 
@@ -181,43 +184,43 @@
     }
 
     function startCxoneChat(caseId) {
-  (function (n, u) {
-    window.CXoneDfo = n;
-    window[n] = window[n] || function () {
-      (window[n].q = window[n].q || []).push(arguments);
-    };
-    window[n].u = u;
+      (function (n, u) {
+        window.CXoneDfo = n;
+        window[n] = window[n] || function () {
+          (window[n].q = window[n].q || []).push(arguments);
+        };
+        window[n].u = u;
 
-    const e = document.createElement("script");
-    e.type = "module";
-    e.src = `https://web-modules-de-eu1.niceincontact.com/loader/1/loader.js?caseId=${caseId}`;
-    document.head.appendChild(e);
-  })("cxone", "https://web-modules-de-eu1.niceincontact.com/loader/1/loader.js");
+        const e = document.createElement("script");
+        e.type = "module";
+        e.src = `https://web-modules-de-eu1.niceincontact.com/loader/1/loader.js?caseId=${caseId}`;
+        document.head.appendChild(e);
+      })("cxone", "https://web-modules-de-eu1.niceincontact.com/loader/1/loader.js");
 
-  // Wait for script to load
-  setTimeout(() => {
-    cxone("init", "1150", "chat_8588f97c-23cc-4dee-b24c-35e612849e91");
-    cxone("chat", "init", 1150, "chat_8588f97c-23cc-4dee-b24c-35e612849e91");
+      // Wait for script to load
+      setTimeout(() => {
+        cxone("init", "1150", "chat_8588f97c-23cc-4dee-b24c-35e612849e91");
+        cxone("chat", "init", 1150, "chat_8588f97c-23cc-4dee-b24c-35e612849e91");
 
-    cxone("chat", "setCustomerName", "Steven Emerson");
-    cxone("chat", "setCustomField", "saeccdept", "Sales");
+        cxone("chat", "setCustomerName", "Steven Emerson");
+        cxone("chat", "setCustomField", "saeccdept", "Sales");
 
-    cxone("chat", "sendFirstMessageAutomatically", "Chat has been initiated");
-    cxone("chat", "hideFirstSentMessage", false);
-    cxone("chat", "hidePreSurvey");
+        cxone("chat", "sendFirstMessageAutomatically", "Chat has been initiated");
+        cxone("chat", "hideFirstSentMessage", false);
+        cxone("chat", "hidePreSurvey");
 
-    // Listen for when CXone chat window actually opens
-    cxone("chat", "onOpened", function () {
-      console.log("CXone Chat is fully opened — now hiding Embedded Messaging");
-      document.getElementById("embedded-messaging").style.display = "none";
-    });
+        // Listen for when CXone chat window actually opens
+        cxone("chat", "onOpened", function () {
+          console.log("CXone Chat is fully opened — now hiding Embedded Messaging");
+          document.getElementById("embedded-messaging").style.display = "none";
+        });
 
-    cxone("chat", "openChatWindow");
-    cxone("chat", "autoStartSession");
+        cxone("chat", "openChatWindow");
+        cxone("chat", "autoStartSession");
 
-    console.log("CXone Chat Started.");
-  }, 2000);
-}
+        console.log("CXone Chat Started.");
+      }, 2000);
+    }
 
     // Run weather first then load chat
     getWeather().then(() => {
