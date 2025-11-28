@@ -178,38 +178,43 @@
     }
 
     function startCxoneChat(caseId) {
-      (function (n, u) {
-        window.CXoneDfo = n;
-        window[n] = window[n] || function () {
-          (window[n].q = window[n].q || []).push(arguments);
-        };
-        window[n].u = u;
+  (function (n, u) {
+    window.CXoneDfo = n;
+    window[n] = window[n] || function () {
+      (window[n].q = window[n].q || []).push(arguments);
+    };
+    window[n].u = u;
 
-        const e = document.createElement("script");
-        e.type = "module";
-        e.src = u + "?" + Math.round(Date.now() / 1000 / 3600);
-        document.head.appendChild(e);
-      })("cxone", "https://web-modules-de-eu1.niceincontact.com/loader/1/loader.js?caseId=${caseId}");
+    const e = document.createElement("script");
+    e.type = "module";
+    e.src = `https://web-modules-de-eu1.niceincontact.com/loader/1/loader.js?caseId=${caseId}`;
+    document.head.appendChild(e);
+  })("cxone", "https://web-modules-de-eu1.niceincontact.com/loader/1/loader.js");
 
-      // Run CXone configuration after script loads
-      setTimeout(() => {
-        cxone("init", "1150", "chat_8588f97c-23cc-4dee-b24c-35e612849e91");
-        cxone("chat", "init", 1150, "chat_8588f97c-23cc-4dee-b24c-35e612849e91");
+  // Wait for script to load
+  setTimeout(() => {
+    cxone("init", "1150", "chat_8588f97c-23cc-4dee-b24c-35e612849e91");
+    cxone("chat", "init", 1150, "chat_8588f97c-23cc-4dee-b24c-35e612849e91");
 
-        cxone("chat", "setCustomerName", "Steven Emerson");
-        cxone("chat", "setCustomField", "saeccdept", "Sales");
+    cxone("chat", "setCustomerName", "Steven Emerson");
+    cxone("chat", "setCustomField", "saeccdept", "Sales");
 
-        cxone("chat", "sendFirstMessageAutomatically", "Chat has been initiated");
-        cxone("chat", "hideFirstSentMessage", false);
+    cxone("chat", "sendFirstMessageAutomatically", "Chat has been initiated");
+    cxone("chat", "hideFirstSentMessage", false);
+    cxone("chat", "hidePreSurvey");
 
-        cxone("chat", "hidePreSurvey");
-        cxone("chat", "openChatWindow");
-        cxone("chat", "autoStartSession");
+    // Listen for when CXone chat window actually opens
+    cxone("chat", "onOpened", function () {
+      console.log("CXone Chat is fully opened — now hiding Embedded Messaging");
+      document.getElementById("embedded-messaging").style.display = "none";
+    });
 
-        console.log("CXone Chat Started.");
-      }, 2000);
-    }
+    cxone("chat", "openChatWindow");
+    cxone("chat", "autoStartSession");
 
+    console.log("CXone Chat Started.");
+  }, 2000);
+}
 
     // Run weather first then load chat
     getWeather().then(() => {
