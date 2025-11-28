@@ -102,8 +102,7 @@
 
   <script>
     let temperature = null; // global variable so chat can use it
-    let firstName = "";
-    let lastName = "";
+
     // Fetch Weather
     function getWeather() {
       const apiKey = "d08a08a34bb64ee2b21121009252111";
@@ -124,12 +123,11 @@
     function initEmbeddedMessaging() {
       try {
         embeddedservice_bootstrap.settings.language = 'en_US';
-        window.addEventListener("onEmbeddedMessagingPreChatSubmitted", ({ detail }) => {
-          const { _firstName, _lastName } = detail.prechatSubmitFields;
-          firstName = _firstName;
-          lastName = _lastName;
-          console.log(`User Name: ${firstName} ${lastName}`);
-        });
+          window.addEventListener("onEmbeddedMessagingPreChatSubmitted", ({ detail }) => {
+            const { _firstName, _lastName } = detail.prechatSubmitFields;
+
+            console.log(`User Name: ${_firstName} ${_lastName}`);
+          });
 
         window.addEventListener("onEmbeddedMessageSent", (event) => {
           console.log("Raw Event:", event);
@@ -155,7 +153,7 @@
             } else {
               console.log("No Case Id found");
             }
-            startCxoneChat(caseId,firstName,lastName);
+            startCxoneChat(caseId);
             document.getElementById('embedded-messaging').style.display = 'none'
             //embeddedservice_bootstrap.utilAPI.hideChatButton();
           }
@@ -185,7 +183,7 @@
       }
     }
 
-    function startCxoneChat(caseId,firstName,lastName) {
+    function startCxoneChat(caseId) {
       (function (n, u) {
         window.CXoneDfo = n;
         window[n] = window[n] || function () {
@@ -195,7 +193,7 @@
 
         const e = document.createElement("script");
         e.type = "module";
-        e.src = `https://web-modules-de-eu1.niceincontact.com/loader/1/loader.js?caseId=${caseId}&firstName=${encodeURIComponent(firstName)}&lastName=${encodeURIComponent(lastName)}`;
+        e.src = `https://web-modules-de-eu1.niceincontact.com/loader/1/loader.js?caseId=${caseId}`;
         document.head.appendChild(e);
       })("cxone", "https://web-modules-de-eu1.niceincontact.com/loader/1/loader.js");
 
