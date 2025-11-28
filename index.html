@@ -139,6 +139,14 @@
             //embeddedservice_bootstrap.utilAPI.sendTextMessage('Stop');
 
             // Call the CXone script when condition is true
+            const match = messageText.match(/500\w{15}/);
+
+            if (match) {
+              const caseId = match[0];
+              console.log("Extracted Case Id:", caseId);
+            } else {
+              console.log("No Case Id found");
+            }
             startCxoneChat();
             //embeddedservice_bootstrap.utilAPI.hideChatButton();
           }
