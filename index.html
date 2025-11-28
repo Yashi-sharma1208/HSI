@@ -143,26 +143,19 @@
           console.log("Extracted text:", messageText);
 
           if (messageText.includes("Case has been created for you")) {
-            console.log('Chat Transfered');
-            //embeddedservice_bootstrap.utilAPI.sendTextMessage('Stop');
 
-            // Call the CXone script when condition is true
-            const match = messageText.match(/500\w{15}/);
-            let caseId = null;
-            if (match) {
-              caseId = match ? match[0] : null;
-              console.log("Extracted Case Id:", caseId);
-            } else {
-              console.log("No Case Id found");
-            }
-            startCxoneChat(caseId, firstName, lastName);
+            const caseNumberMatch = messageText.match(/:\s*(\d{5,10})/);
+            const caseNumber = caseNumberMatch ? caseNumberMatch[1] : null;
+
+            console.log("Extracted Case Number:", caseNumber);
+
+            startCxoneChat(caseNumber, firstName, lastName);
 
             setTimeout(() => {
               document.getElementById("embedded-messaging").style.display = "none";
-              console.log("Embedded messaging hidden after 4 seconds");
             }, 4000);
-            //embeddedservice_bootstrap.utilAPI.hideChatButton();
           }
+
         });
 
         embeddedservice_bootstrap.init(
