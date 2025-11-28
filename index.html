@@ -140,9 +140,9 @@
 
             // Call the CXone script when condition is true
             const match = messageText.match(/500\w{15}/);
-
+            let caseId = null;
             if (match) {
-              const caseId = match ? match[0] : null;
+              caseId = match ? match[0] : null;
               console.log("Extracted Case Id:", caseId);
             } else {
               console.log("No Case Id found");
