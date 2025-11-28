@@ -123,6 +123,9 @@
     function initEmbeddedMessaging() {
       try {
         embeddedservice_bootstrap.settings.language = 'en_US';
+        window.addEventListener("onEmbeddedMessagingPreChatSubmitted", (event) => {
+          console.log("Prechat submitted:", event.detail);
+        })
         window.addEventListener("onEmbeddedMessageSent", (event) => {
           console.log("Raw Event:", event);
 
