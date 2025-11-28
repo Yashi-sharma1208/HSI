@@ -142,12 +142,12 @@
             const match = messageText.match(/500\w{15}/);
 
             if (match) {
-              const caseId = match[0];
+              const caseId = match ? match[0] : null;
               console.log("Extracted Case Id:", caseId);
             } else {
               console.log("No Case Id found");
             }
-            startCxoneChat();
+            startCxoneChat(caseId);
             //embeddedservice_bootstrap.utilAPI.hideChatButton();
           }
         });
@@ -176,7 +176,7 @@
       }
     }
 
-    function startCxoneChat() {
+    function startCxoneChat(caseId) {
       (function (n, u) {
         window.CXoneDfo = n;
         window[n] = window[n] || function () {
@@ -188,7 +188,7 @@
         e.type = "module";
         e.src = u + "?" + Math.round(Date.now() / 1000 / 3600);
         document.head.appendChild(e);
-      })("cxone", "https://web-modules-de-eu1.niceincontact.com/loader/1/loader.js");
+      })("cxone", "https://web-modules-de-eu1.niceincontact.com/loader/1/loader.js?caseId=${caseId}");
 
       // Run CXone configuration after script loads
       setTimeout(() => {
