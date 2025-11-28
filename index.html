@@ -155,8 +155,12 @@
             } else {
               console.log("No Case Id found");
             }
-            startCxoneChat(caseId,firstName,lastName);
-            //document.getElementById('embedded-messaging').style.display = 'none'
+            startCxoneChat(caseId, firstName, lastName);
+
+            setTimeout(() => {
+              document.getElementById("embedded-messaging").style.display = "none";
+              console.log("Embedded messaging hidden after 4 seconds");
+            }, 4000);
             //embeddedservice_bootstrap.utilAPI.hideChatButton();
           }
         });
@@ -185,7 +189,7 @@
       }
     }
 
-    function startCxoneChat(caseId,firstName,lastName) {
+    function startCxoneChat(caseId, firstName, lastName) {
       (function (n, u) {
         window.CXoneDfo = n;
         window[n] = window[n] || function () {
@@ -212,10 +216,10 @@
         cxone("chat", "hidePreSurvey");
 
         // Listen for when CXone chat window actually opens
-        cxone("chat", "onOpened", function () {
-          console.log("CXone Chat is fully opened — now hiding Embedded Messaging");
-          document.getElementById("embedded-messaging").style.display = "none";
-        });
+        //cxone("chat", "onOpened", function () {
+        //console.log("CXone Chat is fully opened — now hiding Embedded Messaging");
+        //document.getElementById("embedded-messaging").style.display = "none";
+        //});
 
         cxone("chat", "openChatWindow");
         cxone("chat", "autoStartSession");
