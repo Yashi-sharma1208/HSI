@@ -144,7 +144,7 @@
           console.log("Extracted text:", messageText);
           // Fetching transcript id
           if (messageText.includes("Here is your Transcript ID : NH-")) {
-            const match = message.match(/Here is your Transcript ID :\s*(\w+-\d+)/);
+            const match = messageText.match(/Here is your Transcript ID :\s*(\w+-\d+)/);
             if (match) {
               transcriptId = match[1];
             }
