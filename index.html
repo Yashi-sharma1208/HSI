@@ -104,6 +104,7 @@
     let temperature = null; // global variable so chat can use it
     let firstName = "";
     let lastName = "";
+    let transcriptId = ""
     // Fetch Weather
     function getWeather() {
       const apiKey = "d08a08a34bb64ee2b21121009252111";
@@ -141,6 +142,14 @@
           const messageText = payload.abstractMessage?.staticContent?.text;
 
           console.log("Extracted text:", messageText);
+          // Fetching transcript id
+          if (messageText.includes("Here is your Transcript ID : NH-")) {
+            const match = message.match(/Here is your Transcript ID :\s*(\w+-\d+)/);
+            if (match) {
+              transcriptId = match[1];
+            }
+            console.log("Transcript ID :"+transcriptId);
+          }
 
           if (messageText.includes("Transferring chat to the support executive")) {
 
