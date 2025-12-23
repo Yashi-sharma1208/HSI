@@ -1,36 +1,49 @@
-<script type='text/javascript'>
-  function initEmbeddedMessaging() {
-    try {
-      embeddedservice_bootstrap.settings.language = 'en_US'; // Set language if needed
- 
-      embeddedservice_bootstrap.init(
-        '00DUE0000050HmZ',
-        'HS_Live_Chat',
-        'https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1762863013240',
-        {
-          scrt2URL: 'https://hsiuk--fullcopy.sandbox.my.salesforce-scrt.com'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Embedded Messaging Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<script type="text/javascript">
+    function initEmbeddedMessaging() {
+        try {
+            embeddedservice_bootstrap.settings.language = 'en_US';
+
+            embeddedservice_bootstrap.init(
+                '00DUE0000050HmZ',
+                'HS_Live_Chat',
+                'https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1762863013240',
+                {
+                    scrt2URL: 'https://hsiuk--fullcopy.sandbox.my.salesforce-scrt.com'
+                }
+            );
+        } catch (err) {
+            console.error('Error loading Embedded Messaging: ', err);
         }
-      );
-    } catch (err) {
-      console.error('Error loading Embedded Messaging: ', err);
     }
-  }
- 
-  // Wait for the embedded messaging framework to load
-  window.addEventListener("onEmbeddedMessagingReady", e => {
-    console.log("Embedded Messaging Ready");
- 
-    // ✅ Pass your hidden prechat field here
-    embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
-      "Brand": "HSI"  // <-- your brand name value here
+
+    // Wait for the embedded messaging framework to load
+    window.addEventListener("onEmbeddedMessagingReady", () => {
+        console.log("Embedded Messaging Ready");
+
+        // Pass hidden prechat fields
+        embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
+            "Brand": "HSI"
+        });
+
+        console.log("Hidden Prechat Field 'Brand' set to HSI");
     });
- 
-    console.log("Hidden Prechat Field 'Brand' set to OrgFarm");
-  });
 </script>
- 
+
 <!-- Keep this line as is -->
-<script type='text/javascript' 
-        src='https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1762863013240/assets/js/bootstrap.min.js' 
-        onload='initEmbeddedMessaging()'>
+<script
+    type="text/javascript"
+    src="https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1762863013240/assets/js/bootstrap.min.js"
+    onload="initEmbeddedMessaging()">
 </script>
+
+</body>
+</html>
