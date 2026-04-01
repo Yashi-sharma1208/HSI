@@ -6,33 +6,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
+
 <script type="text/javascript">
+
+// ✅ Persistent disable logic
+function disableInputPersistently() {
+    const observer = new MutationObserver(() => {
+        const textarea = document.querySelector('.embeddedMessagingInputFooterTextArea');
+
+        if (textarea && !textarea.disabled) {
+            textarea.disabled = true;
+            textarea.setAttribute('aria-disabled', 'true');
+            textarea.style.opacity = '0.5';
+
+            console.log('Input disabled (persistent)');
+        }
+    });
+
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+}
+
+// ✅ Immediate disable
+function disableInputOnce() {
+    setTimeout(() => {
+        const textarea = document.querySelector('.embeddedMessagingInputFooterTextArea');
+
+        if (textarea) {
+            textarea.disabled = true;
+            textarea.setAttribute('aria-disabled', 'true');
+            textarea.style.opacity = '0.5';
+
+            console.log('Input disabled immediately');
+        } else {
+            console.log('Textarea not found');
+        }
+    }, 300);
+}
+
+
+// ✅ Embedded Messaging Ready
 window.addEventListener("onEmbeddedMessagingReady", () => {
     console.log("Embedded Messaging Ready");
+
     embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
         "Brand": "Kent"
     });
-    console.log("Chat active → continuing session");
 });
 
+
+// ✅ Init
 function initEmbeddedMessaging() {
     try {
         embeddedservice_bootstrap.settings.language = 'en_US';
 
+        // ✅ Listen to messages
         window.addEventListener("onEmbeddedMessageSent", (event) => {
             const payload = JSON.parse(event.detail.conversationEntry.entryPayload);
             const messageText = payload.abstractMessage?.staticContent?.text;
 
+            console.log("Message detected:", messageText);
+
             if (messageText === 'Yoo Yashi') {
-                const style = document.createElement('style');
-                style.textContent = `
-                    .embeddedMessagingInputFooterTextArea { 
-                        pointer-events: none !important; 
-                        opacity: 0.5 !important; 
-                    }
-                `;
-                document.head.appendChild(style);
-                console.log('Input disabled via CSS after message: Yoo Yashi');
+
+                console.log('Trigger condition matched');
+
+                // Disable input
+                disableInputOnce();
+
+                // Keep it disabled even after rerender
+                disableInputPersistently();
             }
         });
 
@@ -44,10 +89,12 @@ function initEmbeddedMessaging() {
                 scrt2URL: 'https://hsiuk--fullcopy.sandbox.my.salesforce-scrt.com'
             }
         );
+
     } catch (err) {
         console.error('Error loading Embedded Messaging:', err);
     }
 }
+
 </script>
 
 <script
@@ -55,5 +102,6 @@ function initEmbeddedMessaging() {
     src="https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1769933410060/assets/js/bootstrap.min.js"
     onload="initEmbeddedMessaging()">
 </script>
+
 </body>
 </html>
