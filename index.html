@@ -8,10 +8,6 @@
 <body>
 
 <script type="text/javascript">
-
-/* =========================================================
-   STEP 1: HANDLE SESSION LOGIC (CORE CONTROL)
-========================================================= */
 window.addEventListener("onEmbeddedMessagingReady", () => {
 
     console.log("Embedded Messaging Ready");
@@ -27,7 +23,20 @@ window.addEventListener("onEmbeddedMessagingReady", () => {
 function initEmbeddedMessaging() {
     try {
         embeddedservice_bootstrap.settings.language = 'en_US';
-
+        window.addEventListener("onEmbeddedMessageSent", (event) => {
+            const payload = JSON.parse(event.detail.conversationEntry.entryPayload);
+                //Extract text
+                const messageText = payload.abstractMessage?.staticContent?.text;
+            if(messageText == 'Yoo Yashi'){
+                console.log('Hi');
+                const el = document.querySelector('.embeddedMessagingInputFooterTextArea');
+                if(el){
+                    console.log('Hi');
+                    el.disabled = true;
+                }
+            }
+        })
+        
         embeddedservice_bootstrap.init(
             '00DPv00000Cbjth',
             'HS_Live_Chat',
