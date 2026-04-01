@@ -12,39 +12,13 @@
 const CHAT_DISABLED_KEY = 'chatDisabled';
 
 /* =========================================================
-   DISABLE INPUT (ROBUST - HANDLES RE-RENDER)
-========================================================= */
-function disableInputBox() {
-    const applyDisable = () => {
-        const textarea = document.querySelector('textarea');
-        if (textarea) {
-            textarea.disabled = true;
-        }
-    };
-
-    // Apply immediately
-    applyDisable();
-
-    // Keep enforcing after DOM updates
-    const observer = new MutationObserver(() => {
-        applyDisable();
-    });
-
-    observer.observe(document.body, {
-        childList: true,
-        subtree: true
-    });
-}
-
-
-/* =========================================================
    INIT EMBEDDED MESSAGING
 ========================================================= */
 function initEmbeddedMessaging() {
     try {
         embeddedservice_bootstrap.settings.language = 'en_US';
 
-        /* 🔥 LISTEN TO USER MESSAGE */
+        /* 🔹 LISTEN FOR USER MESSAGE */
         window.addEventListener("onEmbeddedMessageSent", (event) => {
             try {
                 const payload = JSON.parse(event.detail.conversationEntry.entryPayload);
@@ -54,17 +28,17 @@ function initEmbeddedMessaging() {
 
                 /* ✅ YOUR CONDITION */
                 if (messageText === 'Yoo Yashi') {
-                    console.log('Trigger matched → disabling chat');
+                    console.log('Trigger matched → disabling input');
 
-                    // 🔴 Store state
+                    // Store flag
                     localStorage.setItem(CHAT_DISABLED_KEY, 'true');
 
-                    // 🔴 Disable input
+                    // Disable input box
                     disableInputBox();
                 }
 
             } catch (e) {
-                console.error('Error parsing message payload:', e);
+                console.error('Error parsing payload:', e);
             }
         });
 
@@ -84,30 +58,73 @@ function initEmbeddedMessaging() {
 
 
 /* =========================================================
-   READY EVENT
+   ON READY → HANDLE SESSION RESET LOGIC
 ========================================================= */
 window.addEventListener("onEmbeddedMessagingReady", () => {
     console.log("Embedded Messaging Ready");
 
+    const isDisabled = localStorage.getItem(CHAT_DISABLED_KEY);
+
+    /* 🔥 ONLY SPECIAL CASE */
+    if (isDisabled === 'true') {
+        console.log('Chat was disabled → restarting session');
+
+        try {
+            embeddedservice_bootstrap.userVerificationAPI.clearSession(true);
+
+            // Remove flag to avoid loop
+            localStorage.removeItem(CHAT_DISABLED_KEY);
+
+            // Reload → new session
+            window.location.reload();
+
+        } catch (e) {
+            console.error('Session reset failed:', e);
+        }
+
+        return;
+    }
+
+    /* ✅ NORMAL FLOW (NO CHANGE) */
     embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
         "Brand": "Kent"
     });
 
-    /* 🔥 If already disabled (after refresh), enforce again */
-    const isDisabled = localStorage.getItem(CHAT_DISABLED_KEY);
-    if (isDisabled === 'true') {
-        console.log('Restoring disabled state after refresh');
-        disableInputBox();
-    }
 });
+
+
+/* =========================================================
+   DISABLE INPUT (HANDLES SALESFORCE RE-RENDER)
+========================================================= */
+function disableInputBox() {
+    const applyDisable = () => {
+        const textarea = document.querySelector('textarea');
+        if (textarea) {
+            textarea.disabled = true;
+        }
+    };
+
+    // Apply immediately
+    applyDisable();
+
+    // Re-apply on DOM updates (Salesforce re-renders)
+    const observer = new MutationObserver(() => {
+        applyDisable();
+    });
+
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+}
 
 </script>
 
 <!-- Salesforce Script -->
 <script 
-type='text/javascript'
-src='https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1769933410060/assets/js/bootstrap.min.js'
-onload='initEmbeddedMessaging()'>
+type="text/javascript"
+src="https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1769933410060/assets/js/bootstrap.min.js"
+onload="initEmbeddedMessaging()">
 </script>
 
 </body>
