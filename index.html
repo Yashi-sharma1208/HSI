@@ -9,17 +9,45 @@
 
 <script type="text/javascript">
 
-// ✅ Persistent disable logic
+// ✅ Retry until textarea appears
+function waitAndDisableInput() {
+    let attempts = 0;
+    const maxAttempts = 20;
+
+    const interval = setInterval(() => {
+        const textarea = document.querySelector('.embeddedMessagingInputFooterTextArea, textarea');
+
+        if (textarea) {
+            textarea.disabled = true;
+            textarea.setAttribute('aria-disabled', 'true');
+            textarea.style.opacity = '0.5';
+
+            console.log('Textarea found and disabled');
+            clearInterval(interval);
+            return;
+        }
+
+        attempts++;
+
+        if (attempts >= maxAttempts) {
+            console.log('Textarea not found after retries');
+            clearInterval(interval);
+        }
+    }, 300);
+}
+
+
+// ✅ Keep it disabled even after Salesforce re-render
 function disableInputPersistently() {
     const observer = new MutationObserver(() => {
-        const textarea = document.querySelector('.embeddedMessagingInputFooterTextArea');
+        const textarea = document.querySelector('.embeddedMessagingInputFooterTextArea, textarea');
 
         if (textarea && !textarea.disabled) {
             textarea.disabled = true;
             textarea.setAttribute('aria-disabled', 'true');
             textarea.style.opacity = '0.5';
 
-            console.log('Input disabled (persistent)');
+            console.log('Re-applied disable after re-render');
         }
     });
 
@@ -27,23 +55,6 @@ function disableInputPersistently() {
         childList: true,
         subtree: true
     });
-}
-
-// ✅ Immediate disable
-function disableInputOnce() {
-    setTimeout(() => {
-        const textarea = document.querySelector('.embeddedMessagingInputFooterTextArea');
-
-        if (textarea) {
-            textarea.disabled = true;
-            textarea.setAttribute('aria-disabled', 'true');
-            textarea.style.opacity = '0.5';
-
-            console.log('Input disabled immediately');
-        } else {
-            console.log('Textarea not found');
-        }
-    }, 300);
 }
 
 
@@ -62,7 +73,7 @@ function initEmbeddedMessaging() {
     try {
         embeddedservice_bootstrap.settings.language = 'en_US';
 
-        // ✅ Listen to messages
+        // ✅ Listen for messages
         window.addEventListener("onEmbeddedMessageSent", (event) => {
             const payload = JSON.parse(event.detail.conversationEntry.entryPayload);
             const messageText = payload.abstractMessage?.staticContent?.text;
@@ -70,13 +81,12 @@ function initEmbeddedMessaging() {
             console.log("Message detected:", messageText);
 
             if (messageText === 'Yoo Yashi') {
-
                 console.log('Trigger condition matched');
 
-                // Disable input
-                disableInputOnce();
+                // ✅ Wait + disable
+                waitAndDisableInput();
 
-                // Keep it disabled even after rerender
+                // ✅ Persist disable
                 disableInputPersistently();
             }
         });
