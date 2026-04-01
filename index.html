@@ -27,15 +27,15 @@ function initEmbeddedMessaging() {
             const payload = JSON.parse(event.detail.conversationEntry.entryPayload);
                 //Extract text
                 const messageText = payload.abstractMessage?.staticContent?.text;
-            if(messageText == 'Yoo Yashi'){
-                console.log('Hi');
-                const el = document.querySelector('.embeddedMessagingInputFooterTextArea');
-                console.log('El ='+el);
-                if(el){
-                    console.log('Hello');
-                    el.disabled = true;
-                }
-            }
+            if (messageText === 'Yoo Yashi') {
+    const style = document.createElement('style');
+    style.textContent = `
+        .embeddedMessagingInputFooterTextArea { 
+            pointer-events: none !important; 
+            opacity: 0.5 !important; 
+        };
+    document.head.appendChild(style);
+}
         })
         
         embeddedservice_bootstrap.init(
