@@ -34,7 +34,10 @@ function initEmbeddedMessaging() {
                     localStorage.setItem(CHAT_DISABLED_KEY, 'true');
 
                     // Disable input box
-                    disableInputBox();
+                    const textarea = document.querySelector('.embeddedMessagingInputFooterTextArea');
+                if (textarea) {
+                    textarea.disabled = true;
+                }
                 }
 
             } catch (e) {
@@ -89,31 +92,6 @@ window.addEventListener("onEmbeddedMessagingReady", () => {
 
 });
 
-
-/* =========================================================
-   DISABLE INPUT (HANDLES SALESFORCE RE-RENDER)
-========================================================= */
-function disableInputBox() {
-    const applyDisable = () => {
-        const textarea = document.querySelector('textarea');
-        if (textarea) {
-            textarea.disabled = true;
-        }
-    };
-
-    // Apply immediately
-    applyDisable();
-
-    // Re-apply on DOM updates (Salesforce re-renders)
-    const observer = new MutationObserver(() => {
-        applyDisable();
-    });
-
-    observer.observe(document.body, {
-        childList: true,
-        subtree: true
-    });
-}
 
 </script>
 
