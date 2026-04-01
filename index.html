@@ -9,20 +9,46 @@
 
 <script type="text/javascript">
 
-// ✅ Retry until textarea appears
+// ✅ Get textarea from Shadow DOM
+function getTextareaFromShadow() {
+    const messagingComponent = document.querySelector('embeddedservice-messaging');
+    if (!messagingComponent) return null;
+
+    let shadow = messagingComponent.shadowRoot;
+    if (!shadow) return null;
+
+    // Traverse deeper if needed
+    let textarea = shadow.querySelector('textarea');
+
+    // Some orgs nest deeper → try recursive search
+    if (!textarea) {
+        const allElements = shadow.querySelectorAll('*');
+        for (let el of allElements) {
+            if (el.shadowRoot) {
+                textarea = el.shadowRoot.querySelector('textarea');
+                if (textarea) break;
+            }
+        }
+    }
+
+    return textarea;
+}
+
+
+// ✅ Retry + disable
 function waitAndDisableInput() {
     let attempts = 0;
-    const maxAttempts = 20;
+    const maxAttempts = 25;
 
     const interval = setInterval(() => {
-        const textarea = document.querySelector('.embeddedMessagingInputFooterTextArea, textarea');
+        const textarea = getTextareaFromShadow();
 
         if (textarea) {
             textarea.disabled = true;
             textarea.setAttribute('aria-disabled', 'true');
             textarea.style.opacity = '0.5';
 
-            console.log('Textarea found and disabled');
+            console.log('Textarea found in shadow DOM and disabled');
             clearInterval(interval);
             return;
         }
@@ -30,24 +56,24 @@ function waitAndDisableInput() {
         attempts++;
 
         if (attempts >= maxAttempts) {
-            console.log('Textarea not found after retries');
+            console.log('Textarea not found even in shadow DOM');
             clearInterval(interval);
         }
     }, 300);
 }
 
 
-// ✅ Keep it disabled even after Salesforce re-render
+// ✅ Persist after re-render
 function disableInputPersistently() {
     const observer = new MutationObserver(() => {
-        const textarea = document.querySelector('.embeddedMessagingInputFooterTextArea, textarea');
+        const textarea = getTextareaFromShadow();
 
         if (textarea && !textarea.disabled) {
             textarea.disabled = true;
             textarea.setAttribute('aria-disabled', 'true');
             textarea.style.opacity = '0.5';
 
-            console.log('Re-applied disable after re-render');
+            console.log('Re-applied disable inside shadow DOM');
         }
     });
 
@@ -58,7 +84,7 @@ function disableInputPersistently() {
 }
 
 
-// ✅ Embedded Messaging Ready
+// ✅ Ready event
 window.addEventListener("onEmbeddedMessagingReady", () => {
     console.log("Embedded Messaging Ready");
 
@@ -73,7 +99,6 @@ function initEmbeddedMessaging() {
     try {
         embeddedservice_bootstrap.settings.language = 'en_US';
 
-        // ✅ Listen for messages
         window.addEventListener("onEmbeddedMessageSent", (event) => {
             const payload = JSON.parse(event.detail.conversationEntry.entryPayload);
             const messageText = payload.abstractMessage?.staticContent?.text;
@@ -83,10 +108,7 @@ function initEmbeddedMessaging() {
             if (messageText === 'Yoo Yashi') {
                 console.log('Trigger condition matched');
 
-                // ✅ Wait + disable
                 waitAndDisableInput();
-
-                // ✅ Persist disable
                 disableInputPersistently();
             }
         });
