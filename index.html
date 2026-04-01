@@ -14,6 +14,8 @@
 			 window.addEventListener("onEmbeddedMessageSent", (event) =>{
 				 const payload = JSON.parse(event.detail.conversationEntry.entryPayload);
 				 console.log('Payload = '+payload);
+				 const messageText = payload.abstractMessage?.staticContent?.text;
+				 console.log('Text = '+messageText);
 			 })
 			embeddedservice_bootstrap.init(
 				'00DPv00000Cbjth',
