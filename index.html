@@ -11,7 +11,10 @@
     function initEmbeddedMessaging() {
 		try {
 			embeddedservice_bootstrap.settings.language = 'en_US'; // For example, enter 'en' or 'en-US'
-
+			 window.addEventListener("onEmbeddedMessageSent", (event) =>{
+				 const payload = JSON.parse(event.detail.conversationEntry.entryPayload);
+				 console.log('Payload = '+payload);
+			 })
 			embeddedservice_bootstrap.init(
 				'00DPv00000Cbjth',
 				'HS_Live_Chat',
