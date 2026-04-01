@@ -9,41 +9,24 @@
 
 <script type="text/javascript">
 
-const CHAT_DISABLED_KEY = 'chatDisabled';
-
 /* =========================================================
-   INIT EMBEDDED MESSAGING
+   STEP 1: HANDLE SESSION LOGIC (CORE CONTROL)
 ========================================================= */
+window.addEventListener("onEmbeddedMessagingReady", () => {
+
+    console.log("Embedded Messaging Ready");
+
+    embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
+        "Brand": "Kent"
+    });
+
+    console.log("Chat active → continuing session");
+
+});
+
 function initEmbeddedMessaging() {
     try {
         embeddedservice_bootstrap.settings.language = 'en_US';
-
-        /* 🔹 LISTEN FOR USER MESSAGE */
-        window.addEventListener("onEmbeddedMessageSent", (event) => {
-            try {
-                const payload = JSON.parse(event.detail.conversationEntry.entryPayload);
-                const messageText = payload?.abstractMessage?.staticContent?.text;
-
-                console.log('User Message:', messageText);
-
-                /* ✅ YOUR CONDITION */
-                if (messageText === 'Yoo Yashi') {
-                    console.log('Trigger matched → disabling input');
-
-                    // Store flag
-                    localStorage.setItem(CHAT_DISABLED_KEY, 'true');
-
-                    // Disable input box
-                    const textarea = document.querySelector('.embeddedMessagingInputFooterTextArea');
-                if (textarea) {
-                    textarea.disabled = true;
-                }
-                }
-
-            } catch (e) {
-                console.error('Error parsing payload:', e);
-            }
-        });
 
         embeddedservice_bootstrap.init(
             '00DPv00000Cbjth',
@@ -60,42 +43,9 @@ function initEmbeddedMessaging() {
 }
 
 
-/* =========================================================
-   ON READY → HANDLE SESSION RESET LOGIC
-========================================================= */
-window.addEventListener("onEmbeddedMessagingReady", () => {
-    console.log("Embedded Messaging Ready");
-
-    const isDisabled = localStorage.getItem(CHAT_DISABLED_KEY);
-
-    /* 🔥 ONLY SPECIAL CASE */
-    if (isDisabled === 'true') {
-        console.log('Chat was disabled → restarting session');
-
-        try {
-            embeddedservice_bootstrap.userVerificationAPI.clearSession(true);
-
-            // Remove flag to avoid loop
-            localStorage.removeItem(CHAT_DISABLED_KEY);
-
-        } catch (e) {
-            console.error('Session reset failed:', e);
-        }
-
-        return;
-    }
-
-    /* ✅ NORMAL FLOW (NO CHANGE) */
-    embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
-        "Brand": "Kent"
-    });
-
-});
-
-
 </script>
 
-<!-- Salesforce Script -->
+<!-- Salesforce Embedded Messaging Script -->
 <script 
 type="text/javascript"
 src="https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1769933410060/assets/js/bootstrap.min.js"
