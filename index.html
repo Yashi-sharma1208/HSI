@@ -8,42 +8,102 @@
 <body>
 
 <script type="text/javascript">
-    function initEmbeddedMessaging() {
-		try {
-			embeddedservice_bootstrap.settings.language = 'en_US'; // For example, enter 'en' or 'en-US'
-			 window.addEventListener("onEmbeddedMessageSent", (event) =>{
-				 const payload = JSON.parse(event.detail.conversationEntry.entryPayload);
-				 console.log('Payload = '+payload);
-				 const messageText = payload.abstractMessage?.staticContent?.text;
-				 console.log('Text = '+messageText);
-			 })
-			embeddedservice_bootstrap.init(
-				'00DPv00000Cbjth',
-				'HS_Live_Chat',
-				'https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1769933410060',
-				{
-					scrt2URL: 'https://hsiuk--fullcopy.sandbox.my.salesforce-scrt.com'
-				}
-			);
-		} catch (err) {
-			console.error('Error loading Embedded Messaging: ', err);
-		}
-	};
 
-    // Wait for the embedded messaging framework to load
-    window.addEventListener("onEmbeddedMessagingReady", () => {
-        console.log("Embedded Messaging Ready");
+const CHAT_DISABLED_KEY = 'chatDisabled';
 
-        // Pass hidden prechat fields
-        embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
-            "Brand": "Kent"
+/* =========================================================
+   DISABLE INPUT (ROBUST - HANDLES RE-RENDER)
+========================================================= */
+function disableInputBox() {
+    const applyDisable = () => {
+        const textarea = document.querySelector('textarea');
+        if (textarea) {
+            textarea.disabled = true;
+        }
+    };
+
+    // Apply immediately
+    applyDisable();
+
+    // Keep enforcing after DOM updates
+    const observer = new MutationObserver(() => {
+        applyDisable();
+    });
+
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+}
+
+
+/* =========================================================
+   INIT EMBEDDED MESSAGING
+========================================================= */
+function initEmbeddedMessaging() {
+    try {
+        embeddedservice_bootstrap.settings.language = 'en_US';
+
+        /* 🔥 LISTEN TO USER MESSAGE */
+        window.addEventListener("onEmbeddedMessageSent", (event) => {
+            try {
+                const payload = JSON.parse(event.detail.conversationEntry.entryPayload);
+                const messageText = payload?.abstractMessage?.staticContent?.text;
+
+                console.log('User Message:', messageText);
+
+                /* ✅ YOUR CONDITION */
+                if (messageText === 'Yoo Yashi') {
+                    console.log('Trigger matched → disabling chat');
+
+                    // 🔴 Store state
+                    localStorage.setItem(CHAT_DISABLED_KEY, 'true');
+
+                    // 🔴 Disable input
+                    disableInputBox();
+                }
+
+            } catch (e) {
+                console.error('Error parsing message payload:', e);
+            }
         });
 
-        console.log("Hidden Prechat Field 'Brand' set to HSI");
+        embeddedservice_bootstrap.init(
+            '00DPv00000Cbjth',
+            'HS_Live_Chat',
+            'https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1769933410060',
+            {
+                scrt2URL: 'https://hsiuk--fullcopy.sandbox.my.salesforce-scrt.com'
+            }
+        );
+
+    } catch (err) {
+        console.error('Error loading Embedded Messaging:', err);
+    }
+}
+
+
+/* =========================================================
+   READY EVENT
+========================================================= */
+window.addEventListener("onEmbeddedMessagingReady", () => {
+    console.log("Embedded Messaging Ready");
+
+    embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
+        "Brand": "Kent"
     });
+
+    /* 🔥 If already disabled (after refresh), enforce again */
+    const isDisabled = localStorage.getItem(CHAT_DISABLED_KEY);
+    if (isDisabled === 'true') {
+        console.log('Restoring disabled state after refresh');
+        disableInputBox();
+    }
+});
+
 </script>
 
-<!-- Keep this line as is -->
+<!-- Salesforce Script -->
 <script 
 type='text/javascript'
 src='https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1769933410060/assets/js/bootstrap.min.js'
