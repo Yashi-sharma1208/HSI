@@ -6,38 +6,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-
 <script type="text/javascript">
 window.addEventListener("onEmbeddedMessagingReady", () => {
-
     console.log("Embedded Messaging Ready");
-
     embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
         "Brand": "Kent"
     });
-
     console.log("Chat active → continuing session");
-
 });
 
 function initEmbeddedMessaging() {
     try {
         embeddedservice_bootstrap.settings.language = 'en_US';
+
         window.addEventListener("onEmbeddedMessageSent", (event) => {
             const payload = JSON.parse(event.detail.conversationEntry.entryPayload);
-                //Extract text
-                const messageText = payload.abstractMessage?.staticContent?.text;
+            const messageText = payload.abstractMessage?.staticContent?.text;
+
             if (messageText === 'Yoo Yashi') {
-    const style = document.createElement('style');
-    style.textContent = `
-        .embeddedMessagingInputFooterTextArea { 
-            pointer-events: none !important; 
-            opacity: 0.5 !important; 
-        };
-    document.head.appendChild(style);
-}
-        })
-        
+                const style = document.createElement('style');
+                style.textContent = `
+                    .embeddedMessagingInputFooterTextArea { 
+                        pointer-events: none !important; 
+                        opacity: 0.5 !important; 
+                    }
+                `;
+                document.head.appendChild(style);
+                console.log('Input disabled via CSS after message: Yoo Yashi');
+            }
+        });
+
         embeddedservice_bootstrap.init(
             '00DPv00000Cbjth',
             'HS_Live_Chat',
@@ -46,21 +44,16 @@ function initEmbeddedMessaging() {
                 scrt2URL: 'https://hsiuk--fullcopy.sandbox.my.salesforce-scrt.com'
             }
         );
-
     } catch (err) {
         console.error('Error loading Embedded Messaging:', err);
     }
 }
-
-
 </script>
 
-<!-- Salesforce Embedded Messaging Script -->
-<script 
-type="text/javascript"
-src="https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1769933410060/assets/js/bootstrap.min.js"
-onload="initEmbeddedMessaging()">
+<script
+    type="text/javascript"
+    src="https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1769933410060/assets/js/bootstrap.min.js"
+    onload="initEmbeddedMessaging()">
 </script>
-
 </body>
 </html>
