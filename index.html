@@ -4,53 +4,47 @@
     <meta charset="UTF-8">
     <title>Embedded Messaging Test</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        .embeddedMessagingInputFooterTextArea[lwc-64sju2rf0mv] {
-            pointer-events: none;
-        }
-    </style>
 </head>
+
 <body>
- 
 
+<script type="text/javascript">
+function initEmbeddedMessaging() {
+    try {
+        embeddedservice_bootstrap.settings.language = 'en_US'; // For example, enter 'en' or 'en-US'
 
+        embeddedservice_bootstrap.init(
+            '00DPv00000Cbjth',
+            'HS_Live_Chat',
+            'https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1769933410060',
+            {
+                scrt2URL: 'https://hsiuk--fullcopy.sandbox.my.salesforce-scrt.com'
+            }
+        );
 
-​<script type="text/javascript">
-   function initEmbeddedMessaging() {
-    try {
-      embeddedservice_bootstrap.settings.language = 'en_US'; // For example, enter 'en' or 'en-US'
+    } catch (err) {
+        console.error('Error loading Embedded Messaging:', err);
+    }
+}
 
+// Wait for the embedded messaging framework to load
+window.addEventListener("onEmbeddedMessagingReady", () => {
+    console.log("Embedded Messaging Ready");
 
+    // Pass hidden prechat fields
+    embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
+        "Brand": "Kent"
+    });
 
-      embeddedservice_bootstrap.init(
-        '00DPv00000Cbjth',
-        'HS_Live_Chat',
-        'https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1769933410060',
-        {
-          scrt2URL: 'https://hsiuk--fullcopy.sandbox.my.salesforce-scrt.com'
-        }
-      );
-    } catch (err) {
-      console.error('Error loading Embedded Messaging: ', err);
-    }
-  };
-
-
-
-   // Wait for the embedded messaging framework to load
-   window.addEventListener("onEmbeddedMessagingReady", () => {
-
-       // Pass hidden prechat fields
-       embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
-           "Brand": "Kent"   // Change this value according to site
-       });
-   });
+    console.log("Hidden Prechat Field 'Brand' set to Kent");
+});
 </script>
 
-<script 
-type='text/javascript'
-src='https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1769933410060/assets/js/bootstrap.min.js'
-onload='initEmbeddedMessaging()'>
+<!-- Keep this line as is -->
+<script
+    type="text/javascript"
+    src="https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1769933410060/assets/js/bootstrap.min.js"
+    onload="initEmbeddedMessaging()">
 </script>
 
 </body>
