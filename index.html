@@ -4,57 +4,29 @@
     <meta charset="UTF-8">
     <title>Embedded Messaging Test</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <style>
-        /* Fallback: disable typing (may not always work due to shadow DOM) */
-        textarea.embeddedMessagingInputFooterTextArea {
-            pointer-events: none;
-        }
-    </style>
-
 </head>
 <body>
 
 <script type="text/javascript">
+/**
+* Helper to find and hide elements deep inside Shadow DOM
+*/
+function hideMessagingFooter() {
+    // 1. Find the top-level messaging container
+    const host = document.querySelector('embedded-messaging-container');
+    if (!host || !host.shadowRoot) return;
 
-function hideFooter() {
-    try {
-        const container = document.querySelector('embeddedservice-messaging');
+    // 2. Drill down into the specific nested LWC (Input Footer)
+    const footerComponent = host.shadowRoot.querySelector('lightning-primitive-icon')?.closest('div') 
+                            || host.shadowRoot.querySelector('.footerItemsContainer');
 
-        if (!container) return;
+    // If we can't find it directly, search all shadow roots for the class
+    const target = host.shadowRoot.querySelector('.footerItemsContainer');
 
-        const shadow1 = container.shadowRoot;
-        if (!shadow1) return;
-
-        const conversation = shadow1.querySelector('embeddedmessaging-conversation-state');
-        if (!conversation) return;
-
-        const shadow2 = conversation.shadowRoot;
-        if (!shadow2) return;
-
-        const footer = shadow2.querySelector('.footerItemsContainer');
-
-        if (footer) {
-            footer.style.display = 'none';
-            console.log('✅ Footer hidden');
-        }
-
-    } catch (e) {
-        console.log('Error in hideFooter:', e);
+    if (target) {
+        target.style.display = 'none';
+        console.log('Footer items container hidden successfully.');
     }
-}
-
-function startPersistentHiding() {
-    const observer = new MutationObserver(() => {
-        hideFooter();
-    });
-
-    observer.observe(document.body, {
-        childList: true,
-        subtree: true
-    });
-
-    console.log('👀 MutationObserver started');
 }
 
 function initEmbeddedMessaging() {
@@ -62,28 +34,35 @@ function initEmbeddedMessaging() {
         embeddedservice_bootstrap.settings.language = 'en_US';
 
         window.addEventListener("onEmbeddedMessageSent", (event) => {
-            const payload = JSON.parse(event.detail.conversationEntry.entryPayload);
-            const messageText = payload.abstractMessage?.staticContent?.text;
+            // Safely parse the message text
+            const payload = event.detail.conversationEntry.entryPayload;
+            const messageText = JSON.parse(payload).abstractMessage?.staticContent?.text;
 
             console.log("Message detected:", messageText);
 
             if (messageText === 'Yoo Yashi') {
-                console.log('🎯 Trigger condition matched');
+                console.log('Trigger condition matched: Hiding footer.');
 
-                // Wait for UI to render
-                setTimeout(() => {
-                    hideFooter();
-                    startPersistentHiding();
-                }, 2000);
+                // Immediate hide
+                hideMessagingFooter();
+
+                // Persistent hide: Observe changes in case the component re-renders
+                const observer = new MutationObserver(() => hideMessagingFooter());
+                const config = { attributes: true, childList: true, subtree: true };
+
+                const host = document.querySelector('embedded-messaging-container');
+                if (host && host.shadowRoot) {
+                    observer.observe(host.shadowRoot, config);
+                }
             }
         });
 
         embeddedservice_bootstrap.init(
             '00DPv00000Cbjth',
             'HS_Live_Chat',
-            'https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1769933410060',
+            'https://site.com',
             {
-                scrt2URL: 'https://hsiuk--fullcopy.sandbox.my.salesforce-scrt.com'
+                scrt2URL: 'https://salesforce-scrt.com'
             }
         );
 
@@ -91,14 +70,14 @@ function initEmbeddedMessaging() {
         console.error('Error loading Embedded Messaging:', err);
     }
 }
-
 </script>
 
 <script
     type="text/javascript"
-    src="https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1769933410060/assets/js/bootstrap.min.js"
+    src="https://site.com/assets/js/bootstrap.min.js"
     onload="initEmbeddedMessaging()">
 </script>
 
 </body>
 </html>
+ 
