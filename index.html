@@ -11,32 +11,46 @@
     </style>
 </head>
 <body>
+ 
 
-<script type="text/javascript">
-function initEmbeddedMessaging() {
-    try {
-        embeddedservice_bootstrap.settings.language = 'en_US';
 
-        embeddedservice_bootstrap.init(
-            '00DPv00000Cbjth',
-            'HS_Live_Chat',
-            'https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1769933410060',
-            {
-                scrt2URL: 'https://hsiuk--fullcopy.sandbox.my.salesforce-scrt.com'
-            }
-        );
 
-    } catch (err) {
-        console.error('Error loading Embedded Messaging:', err);
-    }
-}
+​<script type="text/javascript">
+   function initEmbeddedMessaging() {
+    try {
+      embeddedservice_bootstrap.settings.language = 'en_US'; // For example, enter 'en' or 'en-US'
 
+
+
+      embeddedservice_bootstrap.init(
+        '00DPv00000Cbjth',
+        'HS_Live_Chat',
+        'https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1769933410060',
+        {
+          scrt2URL: 'https://hsiuk--fullcopy.sandbox.my.salesforce-scrt.com'
+        }
+      );
+    } catch (err) {
+      console.error('Error loading Embedded Messaging: ', err);
+    }
+  };
+
+
+
+   // Wait for the embedded messaging framework to load
+   window.addEventListener("onEmbeddedMessagingReady", () => {
+
+       // Pass hidden prechat fields
+       embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
+           "Brand": "Kent"   // Change this value according to site
+       });
+   });
 </script>
 
-<script
-    type="text/javascript"
-    src="https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1769933410060/assets/js/bootstrap.min.js"
-    onload="initEmbeddedMessaging()">
+<script 
+type='text/javascript'
+src='https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1769933410060/assets/js/bootstrap.min.js'
+onload='initEmbeddedMessaging()'>
 </script>
 
 </body>
