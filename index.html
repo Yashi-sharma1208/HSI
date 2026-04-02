@@ -1,54 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Embedded Messaging Test</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        .embeddedMessagingInputFooterTextArea[lwc-64sju2rf0mv] {
-            pointer-events: none;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Disable LWC Textarea</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    /* Disable typing + clicking */
+    textarea.embeddedMessagingInputFooterTextArea {
+      pointer-events: none !important;
+      background-color: #f5f5f5 !important;
+      cursor: not-allowed !important;
+      opacity: 0.6;
+    }
+  </style>
+
 </head>
 <body>
 
-<script type="text/javascript">
-function initEmbeddedMessaging() {
-    try {
-        embeddedservice_bootstrap.settings.language = 'en_US';
+  <webruntime-app>
+    <lwr-router-container>
 
-        window.addEventListener("onEmbeddedMessageSent", (event) => {
-            const payload = JSON.parse(event.detail.conversationEntry.entryPayload);
-            const messageText = payload.abstractMessage?.staticContent?.text;
+      <webruntime-inner-app>
 
-            console.log("Message detected:", messageText);
+        <embedded_service_iframe-iframe-wrapper>
+          <webruntime-router-container>
 
-            if (messageText === 'Yoo Yashi') {
-                console.log('Trigger condition matched');
-            }
-        });
+            <embedded_service_iframe-frame-layout>
 
-        embeddedservice_bootstrap.init(
-            '00DPv00000Cbjth',
-            'HS_Live_Chat',
-            'https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1769933410060',
-            {
-                scrt2URL: 'https://hsiuk--fullcopy.sandbox.my.salesforce-scrt.com'
-            }
-        );
+              <embeddedmessaging-container dir="ltr">
 
-    } catch (err) {
-        console.error('Error loading Embedded Messaging:', err);
-    }
-}
+                <!-- HEADER -->
+                <embeddedmessaging-chat-header>
+                  <header class="chatHeader">
+                    <button class="menuButton">⋮</button>
+                    <h2 class="headerText">Chat</h2>
+                    <button class="minimizeButton">⌄</button>
+                  </header>
+                </embeddedmessaging-chat-header>
 
-</script>
+                <!-- CONVERSATION -->
+                <embeddedmessaging-conversation-state>
 
-<script
-    type="text/javascript"
-    src="https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1769933410060/assets/js/bootstrap.min.js"
-    onload="initEmbeddedMessaging()">
-</script>
+                  <embeddedmessaging-conversation-log>
+                    <section class="slds-chat">
+                      <ul class="slds-chat-list">
+                        <li class="system-message">
+                          Thanks! Let us know how we can help...
+                        </li>
+                      </ul>
+                    </section>
+                  </embeddedmessaging-conversation-log>
+
+                  <!-- INPUT FOOTER -->
+                  <embeddedmessaging-input-footer>
+                    <div class="footerItemsContainer">
+
+                      <div class="fileAttachmentButtonWrapper">
+                        <input type="file" class="fileAttachmentButtonInput" multiple />
+                      </div>
+
+                      <div class="embeddedMessagingInputTextAreaWrapper">
+                        <textarea
+                          class="embeddedMessagingInputFooterTextArea"
+                          placeholder="Start a new chat..."
+                          rows="1"
+                        ></textarea>
+                      </div>
+
+                    </div>
+                  </embeddedmessaging-input-footer>
+
+                </embeddedmessaging-conversation-state>
+
+              </embeddedmessaging-container>
+
+            </embedded_service_iframe-frame-layout>
+
+          </webruntime-router-container>
+        </embedded_service_iframe-iframe-wrapper>
+
+      </webruntime-inner-app>
+
+    </lwr-router-container>
+  </webruntime-app>
 
 </body>
 </html>
