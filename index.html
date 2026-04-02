@@ -4,99 +4,44 @@
     <meta charset="UTF-8">
     <title>Embedded Messaging Test</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .embeddedMessagingInputFooterTextArea[lwc-64sju2rf0mv] {
+            pointer-events: none;
+        }
+    </style>
 </head>
 <body>
 
 <script type="text/javascript">
+function initEmbeddedMessaging() {
+    try {
+        embeddedservice_bootstrap.settings.language = 'en_US';
 
-    function disableInputArea() {
-        const checkInterval = setInterval(() => {
+        window.addEventListener("onEmbeddedMessageSent", (event) => {
+            const payload = JSON.parse(event.detail.conversationEntry.entryPayload);
+            const messageText = payload.abstractMessage?.staticContent?.text;
 
-            // Step 1: Find the <embeddedmessaging-input-footer> custom element
-            const inputFooter = document.querySelector('embeddedmessaging-input-footer');
-            if (!inputFooter || !inputFooter.shadowRoot) return;
+            console.log("Message detected:", messageText);
 
-            // Step 2: Traverse deeper — find the textarea wrapper div inside shadow root
-            const textAreaWrapper = inputFooter.shadowRoot.querySelector('.embeddedMessagingInputTextAreaWrapper');
-            if (!textAreaWrapper) return;
-
-            // Step 3: Get the actual textarea inside the wrapper
-            const textarea = textAreaWrapper.querySelector('textarea.embeddedMessagingInputFooterTextArea');
-            if (!textarea) return;
-
-            // ✅ Disable the textarea
-            textarea.setAttribute('aria-disabled', 'true');
-            textarea.disabled = true;
-            textarea.readOnly = true;
-            textarea.placeholder = 'This conversation has ended.';
-            textarea.style.pointerEvents = 'none';
-            textarea.style.opacity = '0.55';
-            textarea.style.cursor = 'not-allowed';
-            textarea.style.backgroundColor = '#f3f3f3';
-
-            // Step 4: Also disable the send/attachment buttons inside footerItemsContainer
-            const footerContainer = inputFooter.shadowRoot.querySelector('.footerItemsContainer');
-            if (footerContainer) {
-                footerContainer.querySelectorAll('button').forEach(btn => {
-                    btn.disabled = true;
-                    btn.style.pointerEvents = 'none';
-                    btn.style.opacity = '0.4';
-                });
+            if (messageText === 'Yoo Yashi') {
+                console.log('Trigger condition matched');
+                document.querySelector('.footerItemsContainer').style.display = 'none';
             }
+        });
 
-            clearInterval(checkInterval);
-            console.log('[EmbeddedMsg] Input area successfully disabled.');
+        embeddedservice_bootstrap.init(
+            '00DPv00000Cbjth',
+            'HS_Live_Chat',
+            'https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1769933410060',
+            {
+                scrt2URL: 'https://hsiuk--fullcopy.sandbox.my.salesforce-scrt.com'
+            }
+        );
 
-        }, 300);
-
-        // Safety cleanup after 15 seconds
-        setTimeout(() => clearInterval(checkInterval), 15000);
+    } catch (err) {
+        console.error('Error loading Embedded Messaging:', err);
     }
-
-
-    function initEmbeddedMessaging() {
-        try {
-            embeddedservice_bootstrap.settings.language = 'en_US';
-
-            // Listen for incoming messages from Agentforce / human agent
-            window.addEventListener("onEmbeddedMessagingConversationEntryAdded", (event) => {
-                try {
-                    const entry = event.detail?.conversationEntry;
-                    if (!entry) return;
-
-                    const payload = JSON.parse(entry.entryPayload);
-                    const senderRole = entry.sender?.role; // 'Chatbot', 'Agent', 'System'
-                    const messageText = payload?.abstractMessage?.staticContent?.text || '';
-
-                    console.log(`[EmbeddedMsg] ${senderRole}: "${messageText}"`);
-
-                    // Trigger on "thank you" from bot or agent only
-                    if (
-                        (senderRole === 'Chatbot' || senderRole === 'Agent') &&
-                        messageText.toLowerCase().includes('thank you')
-                    ) {
-                        console.log('[EmbeddedMsg] "Thank you" detected — disabling input...');
-                        disableInputArea();
-                    }
-
-                } catch (parseErr) {
-                    console.error('[EmbeddedMsg] Error parsing entry:', parseErr);
-                }
-            });
-
-            embeddedservice_bootstrap.init(
-                '00DPv00000Cbjth',
-                'HS_Live_Chat',
-                'https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1769933410060',
-                {
-                    scrt2URL: 'https://hsiuk--fullcopy.sandbox.my.salesforce-scrt.com'
-                }
-            );
-
-        } catch (err) {
-            console.error('[EmbeddedMsg] Bootstrap error:', err);
-        }
-    }
+}
 
 </script>
 
@@ -108,4 +53,3 @@
 
 </body>
 </html>
- 
