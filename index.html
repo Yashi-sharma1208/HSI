@@ -4,15 +4,59 @@
     <meta charset="UTF-8">
     <title>Embedded Messaging Test</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <style>
-        .embeddedMessagingInputFooterTextArea[lwc-64sju2rf0mv] {
+        /* Fallback: disable typing (may not always work due to shadow DOM) */
+        textarea.embeddedMessagingInputFooterTextArea {
             pointer-events: none;
         }
     </style>
+
 </head>
 <body>
 
 <script type="text/javascript">
+
+function hideFooter() {
+    try {
+        const container = document.querySelector('embeddedservice-messaging');
+
+        if (!container) return;
+
+        const shadow1 = container.shadowRoot;
+        if (!shadow1) return;
+
+        const conversation = shadow1.querySelector('embeddedmessaging-conversation-state');
+        if (!conversation) return;
+
+        const shadow2 = conversation.shadowRoot;
+        if (!shadow2) return;
+
+        const footer = shadow2.querySelector('.footerItemsContainer');
+
+        if (footer) {
+            footer.style.display = 'none';
+            console.log('✅ Footer hidden');
+        }
+
+    } catch (e) {
+        console.log('Error in hideFooter:', e);
+    }
+}
+
+function startPersistentHiding() {
+    const observer = new MutationObserver(() => {
+        hideFooter();
+    });
+
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+
+    console.log('👀 MutationObserver started');
+}
+
 function initEmbeddedMessaging() {
     try {
         embeddedservice_bootstrap.settings.language = 'en_US';
@@ -24,8 +68,13 @@ function initEmbeddedMessaging() {
             console.log("Message detected:", messageText);
 
             if (messageText === 'Yoo Yashi') {
-                console.log('Trigger condition matched');
-                document.querySelector('.footerItemsContainer').style.display = 'none';
+                console.log('🎯 Trigger condition matched');
+
+                // Wait for UI to render
+                setTimeout(() => {
+                    hideFooter();
+                    startPersistentHiding();
+                }, 2000);
             }
         });
 
