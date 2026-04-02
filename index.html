@@ -4,65 +4,36 @@
     <meta charset="UTF-8">
     <title>Embedded Messaging Test</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .embeddedMessagingInputFooterTextArea[lwc-64sju2rf0mv] {
+            pointer-events: none;
+        }
+    </style>
 </head>
 <body>
 
 <script type="text/javascript">
-/**
-* Helper to find and hide elements deep inside Shadow DOM
-*/
-function hideMessagingFooter() {
-    // 1. Find the top-level messaging container
-    const host = document.querySelector('embedded-messaging-container');
-    if (!host || !host.shadowRoot) return;
-
-    // 2. Drill down into the specific nested LWC (Input Footer)
-    const footerComponent = host.shadowRoot.querySelector('lightning-primitive-icon')?.closest('div') 
-                            || host.shadowRoot.querySelector('.footerItemsContainer');
-
-    // If we can't find it directly, search all shadow roots for the class
-    const target = host.shadowRoot.querySelector('.footerItemsContainer');
-
-    if (target) {
-        target.style.display = 'none';
-        console.log('Footer items container hidden successfully.');
-    }
-}
-
 function initEmbeddedMessaging() {
     try {
         embeddedservice_bootstrap.settings.language = 'en_US';
 
         window.addEventListener("onEmbeddedMessageSent", (event) => {
-            // Safely parse the message text
-            const payload = event.detail.conversationEntry.entryPayload;
-            const messageText = JSON.parse(payload).abstractMessage?.staticContent?.text;
+            const payload = JSON.parse(event.detail.conversationEntry.entryPayload);
+            const messageText = payload.abstractMessage?.staticContent?.text;
 
             console.log("Message detected:", messageText);
 
             if (messageText === 'Yoo Yashi') {
-                console.log('Trigger condition matched: Hiding footer.');
-
-                // Immediate hide
-                hideMessagingFooter();
-
-                // Persistent hide: Observe changes in case the component re-renders
-                const observer = new MutationObserver(() => hideMessagingFooter());
-                const config = { attributes: true, childList: true, subtree: true };
-
-                const host = document.querySelector('embedded-messaging-container');
-                if (host && host.shadowRoot) {
-                    observer.observe(host.shadowRoot, config);
-                }
+                console.log('Trigger condition matched');
             }
         });
 
         embeddedservice_bootstrap.init(
             '00DPv00000Cbjth',
             'HS_Live_Chat',
-            'https://site.com',
+            'https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1769933410060',
             {
-                scrt2URL: 'https://salesforce-scrt.com'
+                scrt2URL: 'https://hsiuk--fullcopy.sandbox.my.salesforce-scrt.com'
             }
         );
 
@@ -70,14 +41,14 @@ function initEmbeddedMessaging() {
         console.error('Error loading Embedded Messaging:', err);
     }
 }
+
 </script>
 
 <script
     type="text/javascript"
-    src="https://site.com/assets/js/bootstrap.min.js"
+    src="https://hsiuk--fullcopy.sandbox.my.site.com/ESWHSLiveChat1769933410060/assets/js/bootstrap.min.js"
     onload="initEmbeddedMessaging()">
 </script>
 
 </body>
 </html>
- 
